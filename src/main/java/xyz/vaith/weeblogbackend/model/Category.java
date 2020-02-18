@@ -2,7 +2,11 @@ package xyz.vaith.weeblogbackend.model;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.annotation.Resource;
 
@@ -11,6 +15,9 @@ import javax.annotation.Resource;
  * @author
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Category implements Serializable {
     private Integer id;
 
