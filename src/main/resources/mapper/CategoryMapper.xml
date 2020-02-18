@@ -11,7 +11,7 @@
     id, `name`, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from category
     where id = #{id,jdbcType=INTEGER}
@@ -73,4 +73,11 @@
       update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByPageAndSize" resultMap="BaseResultMap" resultType="list">
+    select  * from category limit #{param1},#{param2}
+  </select>
+
+  <select id="selectExistCategory" resultType="int" parameterType="string">
+    select  count(*) from  category where name = #{name}
+  </select>
 </mapper>
