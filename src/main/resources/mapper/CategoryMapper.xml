@@ -16,6 +16,13 @@
     from category
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByArticleID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT c.id, c.name
+    FROM category c, article_category ac
+    WHERE ac.category_Id = c.id
+    AND ac.article_id = #{id}
+  </select>
   <select id="selectByCategoryID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
