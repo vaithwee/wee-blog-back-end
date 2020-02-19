@@ -64,4 +64,9 @@ public class ArticleServiceImpl implements ArticleService {
     public Article getArticleByID(Integer id) throws Exception {
         return  mapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public List<Article> getArticleList(Integer page, Integer size) throws Exception {
+        return mapper.selectArticleListBy(page * size, size);
+    }
 }

@@ -26,4 +26,10 @@ public class ArticleController {
     public Result add(int id) throws Exception {
         return Result.success(service.getArticleByID(id));
     }
+
+
+    @RequestMapping("/list")
+    public Result list(int page, int size)throws  Exception {
+        return  Result.success(service.getArticleList(page, size));
+    }
 }
