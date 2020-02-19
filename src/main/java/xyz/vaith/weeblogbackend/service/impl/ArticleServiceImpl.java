@@ -5,10 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.vaith.weeblogbackend.exception.BuzzException;
 import xyz.vaith.weeblogbackend.mapper.*;
-import xyz.vaith.weeblogbackend.model.Article;
-import xyz.vaith.weeblogbackend.model.ArticleCategory;
-import xyz.vaith.weeblogbackend.model.Category;
-import xyz.vaith.weeblogbackend.model.Tag;
+import xyz.vaith.weeblogbackend.model.*;
 import xyz.vaith.weeblogbackend.param.ArticleParam;
 import xyz.vaith.weeblogbackend.service.ArticleService;
 
@@ -50,10 +47,21 @@ public class ArticleServiceImpl implements ArticleService {
             article.setCategory(category);
         }
 
+
+
          List<Tag> tags = tagMapper.selectTagsByIDs(param.getTags());
+        for (Tag tag : tags) {
+            ArticleTag at = ArticleTag.builder().articleId(article.getId()).tagId(tag.getId()).createDate(new Date()).updateDate(new Date()).build();
+            atMapper.insert(at);
+        }
         log.info("tag select result:" + tags);
         article.setTags(tags);
 
         return article;
+    }
+
+    @Override
+    public Article getArticleByID(Integer id) throws Exception {
+        return  mapper.selectByPrimaryKey(id);
     }
 }

@@ -13,6 +13,8 @@ public interface CategoryMapper {
 
     Category selectByPrimaryKey(Integer id);
 
+    Category selectByCategoryID(Integer category_id);
+
     int updateByPrimaryKeySelective(Category record);
 
     int updateByPrimaryKey(Category record);

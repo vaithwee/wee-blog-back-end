@@ -20,4 +20,6 @@ public interface TagMapper {
     List<Tag> selectTagList(int start, int size);
 
     List<Tag> selectTagsByIDs(List<Integer> ids);
+
+    List<Tag> selectTagsByArticleID(Integer id);
 }

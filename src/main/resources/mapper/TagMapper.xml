@@ -106,4 +106,12 @@
       #{item}
     </foreach>
   </select>
+
+  <select id="selectTagsByArticleID" resultMap="BaseResultMap" parameterType="int">
+        SELECT
+        t.id, t.name, t.type, t.sort
+        FROM tag t, article_tag att
+        WHERE t.id = att.tag_id
+        AND att.article_id = #{id}
+  </select>
 </mapper>

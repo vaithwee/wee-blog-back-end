@@ -21,4 +21,9 @@ public class ArticleController {
     public Result add(@RequestBody ArticleParam param) throws Exception {
         return  Result.success(service.addArticle(param));
     }
+
+    @RequestMapping("/detail")
+    public Result add(int id) throws Exception {
+        return Result.success(service.getArticleByID(id));
+    }
 }

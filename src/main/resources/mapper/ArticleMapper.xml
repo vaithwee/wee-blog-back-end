@@ -6,15 +6,23 @@
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <association
+            column="category_id"
+            property="category"
+            select="xyz.vaith.weeblogbackend.mapper.CategoryMapper.selectByCategoryID"/>
+    <collection property="tags" column="id" select="xyz.vaith.weeblogbackend.mapper.TagMapper.selectTagsByArticleID" />
   </resultMap>
   <sql id="Base_Column_List">
     id, content, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from article
-    where id = #{id,jdbcType=INTEGER}
+    SELECT
+           a.id,
+           a.content,
+           ac.category_Id
+    FROM article a, article_category ac
+    WHERE a.id = ac.article_id AND a.id = #{id,jdbcType=INTEGER}
+
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from article
