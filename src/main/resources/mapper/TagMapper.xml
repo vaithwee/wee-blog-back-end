@@ -99,4 +99,11 @@
   <select id="selectTagList" resultMap="BaseResultMap" parameterType="int">
     select * from tag limit #{param1}, ${param2}
   </select>
+
+  <select id="selectTagsByIDs" resultMap="BaseResultMap" >
+    select * from tag where id in
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </select>
 </mapper>

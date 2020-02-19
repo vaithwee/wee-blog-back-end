@@ -1,6 +1,7 @@
 package xyz.vaith.weeblogbackend.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.vaith.weeblogbackend.exception.BuzzException;
 import xyz.vaith.weeblogbackend.mapper.CategoryMapper;
 import xyz.vaith.weeblogbackend.model.Category;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@Transactional
 public class CategoryServiceImpl implements CatergoryService {
     @Resource
     CategoryMapper mapper;

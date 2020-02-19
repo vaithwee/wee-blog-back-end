@@ -18,4 +18,6 @@ public interface TagMapper {
     int updateByPrimaryKey(Tag record);
 
     List<Tag> selectTagList(int start, int size);
+
+    List<Tag> selectTagsByIDs(List<Integer> ids);
 }

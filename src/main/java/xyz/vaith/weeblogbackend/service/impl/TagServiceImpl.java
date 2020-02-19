@@ -1,6 +1,7 @@
 package xyz.vaith.weeblogbackend.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.vaith.weeblogbackend.mapper.TagMapper;
 import xyz.vaith.weeblogbackend.model.Tag;
 import xyz.vaith.weeblogbackend.param.TagParam;
@@ -11,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@Transactional
 public class TagServiceImpl implements TagService {
 
     @Resource
