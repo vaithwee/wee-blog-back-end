@@ -29,7 +29,7 @@ public class ArticleController {
 
 
     @RequestMapping("/list")
-    public Result list(int page, int size)throws  Exception {
+    public Result list(Integer page, Integer size)throws  Exception {
         return  Result.success(service.getArticleList(page, size));
     }
 }

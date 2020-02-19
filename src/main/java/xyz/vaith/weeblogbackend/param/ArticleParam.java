@@ -13,5 +13,6 @@ public class ArticleParam {
     Integer id;
     Integer categoryID;
     List<Integer> tags;
+    String title;
     String content;
 }

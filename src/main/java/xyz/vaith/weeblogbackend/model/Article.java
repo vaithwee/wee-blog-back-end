@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * article
- * @author 
+ * @author
  */
 @Data
 @Builder
@@ -19,6 +19,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Article implements Serializable {
     private Integer id;
+
+    private String title;
 
     private String content;
 

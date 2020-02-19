@@ -16,7 +16,7 @@
             select="xyz.vaith.weeblogbackend.mapper.TagMapper.selectTagsByArticleID" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, content, create_date, update_date
+    id, title, content, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
@@ -30,9 +30,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="xyz.vaith.weeblogbackend.model.Article" useGeneratedKeys="true">
-    insert into article (content, create_date, update_date
+    insert into article (title, content, create_date, update_date
       )
-    values (#{content,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+    values (#{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="xyz.vaith.weeblogbackend.model.Article" useGeneratedKeys="true">

@@ -39,7 +39,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (category == null) {
             throw new BuzzException("分类不存在");
         }
-        Article article = Article.builder().content(param.getContent()).createDate(new Date()).updateDate(new Date()).build();
+        Article article = Article.builder().title(param.getTitle()).content(param.getContent()).createDate(new Date()).updateDate(new Date()).build();
         int result = mapper.insert(article);
         if (result > 0) {
             ArticleCategory ac = ArticleCategory.builder().articleId(article.getId()).categoryId(category.getId()).createDate(new Date()).updateDate(new Date()).build();

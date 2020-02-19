@@ -13,9 +13,9 @@ public class ExceptionHandlerManager {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public Result handleException(Exception e) {
-        log.error(e.getStackTrace());
+        log.error(e.getCause().getMessage());
         if (e instanceof BuzzException) {
-            return Result.fail(e.getMessage());
+            return Result.fail(e.getCause().getMessage());
         } else {
             return Result.defaultFail();
         }
