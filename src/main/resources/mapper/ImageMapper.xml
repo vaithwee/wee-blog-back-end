@@ -130,4 +130,8 @@
       bucket = #{bucket,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectImageList" resultMap="BaseResultMap">
+    select * from image limit #{param1}, #{param2}
+  </select>
 </mapper>

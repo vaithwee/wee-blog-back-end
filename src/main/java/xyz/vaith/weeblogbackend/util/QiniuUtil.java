@@ -8,6 +8,9 @@ import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.UUID;
@@ -17,8 +20,12 @@ public class QiniuUtil {
     private static UploadManager uploadManager;
     private static String bucket = "images";
 
-    private static String mini = "imageView2/1/w/50/h/50/q/75|imageslim";
-    private static String preview = "imageView2/1/w/100/h/100/q/75|imageslim";
+    @Autowired
+    private QiniuToken token;
+
+
+    public static   String mini = "imageView2/1/w/50/h/50/q/75|imageslim";
+    public static String preview = "imageView2/1/w/100/h/100/q/75|imageslim";
 
     static {
         auth = auth.create("", "");
@@ -35,7 +42,11 @@ public class QiniuUtil {
         return putRet.key;
     }
 
-    public static String getUrl(String key) {
-        return auth.privateDownloadUrl("http://image.vaith.xyz/" + key + "?" + preview);
+    public static String getOrininalURL(String key) {
+        return auth.privateDownloadUrl("http://image.vaith.xyz/" + key);
+    }
+
+    public static String getLimitURL(String key, String limit) {
+        return auth.privateDownloadUrl("http://image.vaith.xyz/" + key + "?" + limit);
     }
 }

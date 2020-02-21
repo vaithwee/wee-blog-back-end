@@ -9,8 +9,12 @@ import xyz.vaith.weeblogbackend.service.ImageService;
 import xyz.vaith.weeblogbackend.util.QiniuUtil;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -42,12 +46,21 @@ public class ImageServiceImpl implements ImageService {
         file.transferTo(target);
 
         String key  = QiniuUtil.uploadFile(target);
-
-        Image image = Image.builder().name(nfn).contentType(contentType).length(length).server(1).bucket("image").key(key).build();
+        BufferedImage bi = ImageIO.read(new FileInputStream(target));
+        Image image = Image.builder().name(nfn).contentType(contentType).length(length).server(1).bucket("image").key(key).width((double) bi.getWidth()).heigth((double) bi.getHeight()).build();
         imageMapper.insert(image);
 
 
         return image;
+    }
+
+    @Override
+    public List<Image> getImageList(int page, int size) throws Exception {
+        List<Image> images = imageMapper.selectImageList(page * size, size);
+        for (Image image : images) {
+            image.setPreviewURL(QiniuUtil.getLimitURL(image.getKey(), QiniuUtil.preview));
+        }
+        return images;
     }
 }
 

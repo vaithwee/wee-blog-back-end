@@ -26,4 +26,9 @@ public class ImageController {
         String path = request.getSession().getServletContext().getRealPath("/images/");
        return Result.success(imageService.saveImageFileToBucket(file, filename, path));
     }
+
+    @RequestMapping("/list")
+    public Result list(Integer page, Integer size) throws Exception {
+        return Result.success(imageService.getImageList(page, size));
+    }
 }

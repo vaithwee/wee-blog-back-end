@@ -34,5 +34,7 @@ public class Image implements Serializable {
 
     private String bucket;
 
+    private String previewURL;
+
     private static final long serialVersionUID = 1L;
 }
