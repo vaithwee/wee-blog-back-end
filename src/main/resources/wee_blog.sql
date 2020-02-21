@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : Dokcer-Mysql
+ Source Server         : Localhost
  Source Server Type    : MySQL
  Source Server Version : 80017
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 19/02/2020 23:07:21
+ Date: 21/02/2020 10:08:42
 */
 
 SET NAMES utf8mb4;
@@ -75,6 +75,23 @@ CREATE TABLE `category` (
   `update_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for image
+-- ----------------------------
+DROP TABLE IF EXISTS `image`;
+CREATE TABLE `image` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `key` varchar(255) DEFAULT NULL,
+  `content_type` varchar(20) DEFAULT NULL,
+  `length` int(11) DEFAULT NULL,
+  `width` double DEFAULT NULL,
+  `heigth` double DEFAULT NULL,
+  `server` int(11) DEFAULT NULL,
+  `bucket` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for tag
