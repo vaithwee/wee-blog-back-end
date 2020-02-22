@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * image
- * @author 
+ * @author
  */
 @Data
 @AllArgsConstructor
@@ -20,11 +20,13 @@ public class Image implements Serializable {
 
     private String name;
 
+    private String originalName;
+
     private String key;
 
     private String contentType;
 
-    private Integer length;
+    private Long length;
 
     private Double width;
 

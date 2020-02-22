@@ -40,16 +40,16 @@ public class ImageServiceImpl implements ImageService {
         String ext = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().indexOf("."));
         String nfn = uuid + ext;
         String contentType = file.getContentType();
-        int length = (int) file.getSize();
+        Long length = file.getSize();
 
         File target = new File(tmp, nfn);
         file.transferTo(target);
 
         String key  = QiniuUtil.uploadFile(target);
         BufferedImage bi = ImageIO.read(new FileInputStream(target));
-        Image image = Image.builder().name(nfn).contentType(contentType).length(length).server(1).bucket("image").key(key).width((double) bi.getWidth()).heigth((double) bi.getHeight()).build();
+        Image image = Image.builder().name(nfn).contentType(contentType).length(length).server(1).bucket("image").key(key).width((double) bi.getWidth()).heigth((double) bi.getHeight()).originalName(filename).build();
         imageMapper.insert(image);
-
+        image.setPreviewURL(QiniuUtil.getLimitURL(key, QiniuUtil.preview));
 
         return image;
     }

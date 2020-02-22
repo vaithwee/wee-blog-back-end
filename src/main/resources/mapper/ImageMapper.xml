@@ -4,19 +4,21 @@
   <resultMap id="BaseResultMap" type="xyz.vaith.weeblogbackend.model.Image">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="original_name" jdbcType="VARCHAR" property="originalName" />
     <result column="key" jdbcType="VARCHAR" property="key" />
     <result column="content_type" jdbcType="VARCHAR" property="contentType" />
-    <result column="length" jdbcType="INTEGER" property="length" />
+    <result column="length" jdbcType="BIGINT" property="length" />
     <result column="width" jdbcType="DOUBLE" property="width" />
     <result column="heigth" jdbcType="DOUBLE" property="heigth" />
     <result column="server" jdbcType="INTEGER" property="server" />
     <result column="bucket" jdbcType="VARCHAR" property="bucket" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, `name`, `key`, content_type, `length`, width, heigth, server, bucket
+    id, `name`, original_name, `key`, content_type, `length`, width, heigth, server,
+    bucket
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from image
     where id = #{id,jdbcType=INTEGER}
@@ -26,18 +28,23 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="xyz.vaith.weeblogbackend.model.Image" useGeneratedKeys="true">
-    insert into image (`name`, `key`, content_type, 
-      `length`, width, heigth, 
-      server, bucket)
-    values (#{name,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, #{contentType,jdbcType=VARCHAR}, 
-      #{length,jdbcType=INTEGER}, #{width,jdbcType=DOUBLE}, #{heigth,jdbcType=DOUBLE}, 
-      #{server,jdbcType=INTEGER}, #{bucket,jdbcType=VARCHAR})
+    insert into image (`name`, original_name, `key`,
+      content_type, `length`, width,
+      heigth, server, bucket
+      )
+    values (#{name,jdbcType=VARCHAR}, #{originalName,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR},
+      #{contentType,jdbcType=VARCHAR}, #{length,jdbcType=BIGINT}, #{width,jdbcType=DOUBLE},
+      #{heigth,jdbcType=DOUBLE}, #{server,jdbcType=INTEGER}, #{bucket,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="xyz.vaith.weeblogbackend.model.Image" useGeneratedKeys="true">
     insert into image
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="name != null">
         `name`,
+      </if>
+      <if test="originalName != null">
+        original_name,
       </if>
       <if test="key != null">
         `key`,
@@ -65,6 +72,9 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="originalName != null">
+        #{originalName,jdbcType=VARCHAR},
+      </if>
       <if test="key != null">
         #{key,jdbcType=VARCHAR},
       </if>
@@ -72,7 +82,7 @@
         #{contentType,jdbcType=VARCHAR},
       </if>
       <if test="length != null">
-        #{length,jdbcType=INTEGER},
+        #{length,jdbcType=BIGINT},
       </if>
       <if test="width != null">
         #{width,jdbcType=DOUBLE},
@@ -94,6 +104,9 @@
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="originalName != null">
+        original_name = #{originalName,jdbcType=VARCHAR},
+      </if>
       <if test="key != null">
         `key` = #{key,jdbcType=VARCHAR},
       </if>
@@ -101,7 +114,7 @@
         content_type = #{contentType,jdbcType=VARCHAR},
       </if>
       <if test="length != null">
-        `length` = #{length,jdbcType=INTEGER},
+        `length` = #{length,jdbcType=BIGINT},
       </if>
       <if test="width != null">
         width = #{width,jdbcType=DOUBLE},
@@ -121,9 +134,10 @@
   <update id="updateByPrimaryKey" parameterType="xyz.vaith.weeblogbackend.model.Image">
     update image
     set `name` = #{name,jdbcType=VARCHAR},
+      original_name = #{originalName,jdbcType=VARCHAR},
       `key` = #{key,jdbcType=VARCHAR},
       content_type = #{contentType,jdbcType=VARCHAR},
-      `length` = #{length,jdbcType=INTEGER},
+      `length` = #{length,jdbcType=BIGINT},
       width = #{width,jdbcType=DOUBLE},
       heigth = #{heigth,jdbcType=DOUBLE},
       server = #{server,jdbcType=INTEGER},
@@ -134,4 +148,5 @@
   <select id="selectImageList" resultMap="BaseResultMap">
     select * from image limit #{param1}, #{param2}
   </select>
+
 </mapper>
