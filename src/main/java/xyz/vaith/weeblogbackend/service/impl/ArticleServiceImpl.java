@@ -58,7 +58,6 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         Image cover = imageMapper.selectByPrimaryKey(param.getCoverID());
-        cover.setPreviewURL(QiniuUtil.getLimitURL(cover.getKey(), QiniuUtil.preview));
         article.setCover(cover);
 
 
@@ -83,9 +82,6 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<Article> getArticleList(Integer page, Integer size) throws Exception {
         List<Article> articles = mapper.selectArticleListBy(page * size, size);
-        for (Article article : articles) {
-            article.getCover().setPreviewURL(QiniuUtil.getLimitURL(article.getCover().getKey(), QiniuUtil.preview));
-        }
         return articles;
     }
 }

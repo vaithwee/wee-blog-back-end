@@ -50,6 +50,7 @@ public class ImageServiceImpl implements ImageService {
         Image image = Image.builder().name(nfn).contentType(contentType).length(length).server(1).bucket("image").key(key).width((double) bi.getWidth()).heigth((double) bi.getHeight()).originalName(filename).build();
         imageMapper.insert(image);
         image.setPreviewURL(QiniuUtil.getLimitURL(key, QiniuUtil.preview));
+        image.setOriginalURL(QiniuUtil.getOrininalURL(key));
 
         return image;
     }
@@ -57,9 +58,6 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public List<Image> getImageList(int page, int size) throws Exception {
         List<Image> images = imageMapper.selectImageList(page * size, size);
-        for (Image image : images) {
-            image.setPreviewURL(QiniuUtil.getLimitURL(image.getKey(), QiniuUtil.preview));
-        }
         return images;
     }
 }

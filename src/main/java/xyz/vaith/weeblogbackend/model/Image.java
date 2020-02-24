@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import xyz.vaith.weeblogbackend.util.QiniuUtil;
 
 /**
  * image
@@ -37,6 +38,18 @@ public class Image implements Serializable {
     private String bucket;
 
     private String previewURL;
+
+    private String originalURL;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+        this.previewURL = QiniuUtil.getLimitURL(key, QiniuUtil.preview);
+        this.originalURL = QiniuUtil.getOrininalURL(key);
+    }
 
     private static final long serialVersionUID = 1L;
 }
