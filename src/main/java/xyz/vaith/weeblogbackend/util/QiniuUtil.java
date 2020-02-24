@@ -8,32 +8,42 @@ import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.util.UUID;
 
+@Log4j2
 public class QiniuUtil {
-    private static Auth auth;
-    private static UploadManager uploadManager;
-    private static String bucket = "images";
-
-
-    private QiniuToken token;
-
+    private Auth auth;
+    private UploadManager uploadManager;
+    private String bucket = "images";
 
     public static String mini = "imageView2/1/w/50/h/50/q/75|imageslim";
     public static String preview = "imageView2/1/w/100/h/100/q/75|imageslim";
 
-    static {
-        auth = auth.create("x-r9twYLA0VKZpQIG5OfqmEdE5TL5JC3rfj4p3rf", "EeQPSV2H8Ge-WJ9nbwRV_vttfWIjqs_Ex0OgaCYT");
+    private static QiniuUtil _instance;
+
+    public static QiniuUtil defaultUtil() {
+        if (_instance == null) {
+            _instance = new QiniuUtil();
+        }
+        return _instance;
+    }
+
+    QiniuUtil() {
+        QiniuToken token = SpringContextUtil.getBean(QiniuToken.class);
+        auth = Auth.create(token.getAccessKey(), token.getSecretKey());
         Configuration configuration = new Configuration(Zone.zone0());
         uploadManager = new UploadManager(configuration);
     }
 
-    public static String uploadFile(File file) throws QiniuException {
+    public String uploadFile(File file) throws QiniuException {
         String token = auth.uploadToken(bucket);
         String uuid = UUID.randomUUID().toString().replace(" ", "").toLowerCase();
 
@@ -42,11 +52,11 @@ public class QiniuUtil {
         return putRet.key;
     }
 
-    public static String getOrininalURL(String key) {
+    public String getOriginalURL(String key) {
         return auth.privateDownloadUrl("http://image.vaith.xyz/" + key);
     }
 
-    public static String getLimitURL(String key, String limit) {
+    public String getLimitURL(String key, String limit) {
         return auth.privateDownloadUrl("http://image.vaith.xyz/" + key + "?" + limit);
     }
 }

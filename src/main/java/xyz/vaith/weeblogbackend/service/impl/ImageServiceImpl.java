@@ -1,11 +1,15 @@
 package xyz.vaith.weeblogbackend.service.impl;
 
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.vaith.weeblogbackend.mapper.ImageMapper;
 import xyz.vaith.weeblogbackend.model.Image;
 import xyz.vaith.weeblogbackend.service.ImageService;
+import xyz.vaith.weeblogbackend.util.QiniuToken;
 import xyz.vaith.weeblogbackend.util.QiniuUtil;
 
 import javax.annotation.Resource;
@@ -20,12 +24,18 @@ import java.util.UUID;
 
 @Service
 @Transactional
+@Log4j2
 public class ImageServiceImpl implements ImageService {
     @Resource
     ImageMapper imageMapper;
 
+    @Resource
+    QiniuToken token;
+
     @Override
     public Image saveImageFileToBucket(MultipartFile file, String filename, String tmp) throws Exception {
+
+        log.info(token.getSecretKey());
 
         File dir = new File(tmp);
         System.out.println(tmp);
@@ -45,12 +55,12 @@ public class ImageServiceImpl implements ImageService {
         File target = new File(tmp, nfn);
         file.transferTo(target);
 
-        String key  = QiniuUtil.uploadFile(target);
+        String key  = QiniuUtil.defaultUtil().uploadFile(target);
         BufferedImage bi = ImageIO.read(new FileInputStream(target));
         Image image = Image.builder().name(nfn).contentType(contentType).length(length).server(1).bucket("image").key(key).width((double) bi.getWidth()).heigth((double) bi.getHeight()).originalName(filename).build();
         imageMapper.insert(image);
-        image.setPreviewURL(QiniuUtil.getLimitURL(key, QiniuUtil.preview));
-        image.setOriginalURL(QiniuUtil.getOrininalURL(key));
+        image.setPreviewURL(QiniuUtil.defaultUtil().getLimitURL(key, QiniuUtil.preview));
+        image.setOriginalURL(QiniuUtil.defaultUtil().getOriginalURL(key));
 
         return image;
     }

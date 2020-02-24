@@ -47,8 +47,8 @@ public class Image implements Serializable {
 
     public void setKey(String key) {
         this.key = key;
-        this.previewURL = QiniuUtil.getLimitURL(key, QiniuUtil.preview);
-        this.originalURL = QiniuUtil.getOrininalURL(key);
+        this.previewURL = QiniuUtil.defaultUtil().getLimitURL(key, QiniuUtil.preview);
+        this.originalURL = QiniuUtil.defaultUtil().getOriginalURL(key);
     }
 
     private static final long serialVersionUID = 1L;

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @PropertySource(value = {"classpath:qiniu.properties"}, ignoreResourceNotFound = false, encoding = "UTF-8")
-@ConfigurationProperties("qiniu")
+@ConfigurationProperties(prefix = "qiniu")
 @Data
 public class QiniuToken {
     private String accessKey;
