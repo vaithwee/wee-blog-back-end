@@ -10,10 +10,16 @@
             column="id"
             property="category"
             select="xyz.vaith.weeblogbackend.mapper.CategoryMapper.selectByArticleID"/>
+
+    <association
+            column="id"
+            property="cover"
+            select="xyz.vaith.weeblogbackend.mapper.ImageMapper.selectByArticleId" />
     <collection
             property="tags"
             column="id"
             select="xyz.vaith.weeblogbackend.mapper.TagMapper.selectTagsByArticleID" />
+
   </resultMap>
   <sql id="Base_Column_List">
     id, title, content, create_date, update_date

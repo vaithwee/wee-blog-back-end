@@ -20,15 +20,15 @@ public class QiniuUtil {
     private static UploadManager uploadManager;
     private static String bucket = "images";
 
-    @Autowired
+
     private QiniuToken token;
 
 
-    public static   String mini = "imageView2/1/w/50/h/50/q/75|imageslim";
+    public static String mini = "imageView2/1/w/50/h/50/q/75|imageslim";
     public static String preview = "imageView2/1/w/100/h/100/q/75|imageslim";
 
     static {
-        auth = auth.create("", "");
+        auth = auth.create("x-r9twYLA0VKZpQIG5OfqmEdE5TL5JC3rfj4p3rf", "EeQPSV2H8Ge-WJ9nbwRV_vttfWIjqs_Ex0OgaCYT");
         Configuration configuration = new Configuration(Zone.zone0());
         uploadManager = new UploadManager(configuration);
     }

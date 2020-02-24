@@ -15,4 +15,5 @@ public class ArticleParam {
     List<Integer> tags;
     String title;
     String content;
+    Integer coverID;
 }

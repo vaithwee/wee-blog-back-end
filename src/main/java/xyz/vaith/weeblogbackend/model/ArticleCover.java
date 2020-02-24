@@ -2,7 +2,6 @@ package xyz.vaith.weeblogbackend.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,29 +9,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * article
- * @author
+ * article_cover
+ * @author 
  */
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Article implements Serializable {
+@Builder
+public class ArticleCover implements Serializable {
     private Integer id;
 
-    private String title;
+    private Integer articleId;
 
-    private String content;
+    private Integer imageId;
 
     private Date createDate;
 
     private Date updateDate;
-
-    private Category category;
-
-    private List<Tag> tags;
-
-    private Image cover;
 
     private static final long serialVersionUID = 1L;
 }

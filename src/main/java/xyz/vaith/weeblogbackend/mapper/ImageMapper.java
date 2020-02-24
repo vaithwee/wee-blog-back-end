@@ -18,4 +18,6 @@ public interface ImageMapper {
     int updateByPrimaryKey(Image record);
 
     List<Image> selectImageList(int start, int size);
+
+    Image selectByArticleId(Integer id);
 }

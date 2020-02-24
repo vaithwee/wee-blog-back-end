@@ -149,4 +149,11 @@
     select * from image limit #{param1}, #{param2}
   </select>
 
+  <select id="selectByArticleId" resultMap="BaseResultMap">
+    SELECT i.id, i.name, i.original_name, i.key, i.content_type, i.length, i.width, i.heigth
+    FROM image i, article_cover ac
+    WHERE ac.image_id = i.id
+      AND ac.article_id = #{id}
+  </select>
+
 </mapper>
