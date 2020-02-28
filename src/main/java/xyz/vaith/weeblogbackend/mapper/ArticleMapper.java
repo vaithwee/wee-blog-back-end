@@ -18,4 +18,8 @@ public interface ArticleMapper {
     int updateByPrimaryKey(Article record);
 
     List<Article> selectArticleListBy(int start, int size);
+
+    List<Article> selectLastArticleList();
+
+
 }

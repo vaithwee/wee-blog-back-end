@@ -95,4 +95,12 @@
     from article
     limit #{param1}, #{param2}
   </select>
+
+    <select id="selectLastArticleList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from article
+        order by create_date desc
+        limit 6
+    </select>
 </mapper>
