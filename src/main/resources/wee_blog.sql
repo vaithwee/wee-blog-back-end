@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 24/02/2020 11:49:19
+ Date: 01/03/2020 19:07:45
 */
 
 SET NAMES utf8mb4;
@@ -94,6 +94,21 @@ CREATE TABLE `category` (
 ) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+-- Table structure for home_info
+-- ----------------------------
+DROP TABLE IF EXISTS `home_info`;
+CREATE TABLE `home_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cover_id` int(11) DEFAULT NULL,
+  `greeting` varchar(255) DEFAULT NULL,
+  `create_date` datetime DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `home_info_cover_id` (`cover_id`),
+  CONSTRAINT `home_info_cover_id` FOREIGN KEY (`cover_id`) REFERENCES `image` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for image
 -- ----------------------------
 DROP TABLE IF EXISTS `image`;
@@ -109,7 +124,7 @@ CREATE TABLE `image` (
   `server` int(11) DEFAULT NULL,
   `bucket` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for tag
