@@ -40,4 +40,20 @@ public class AESUtil {
         return decrypt(encryptStr, KEY);
     }
 
+    public static void main(String[] args) throws Exception {
+        Map map=new HashMap<String,String>();
+        map.put("title","标题");
+        map.put("zw","汉字");
+        map.put("id", "23");
+
+        String content = JSONObject.toJSONString(map);
+        System.out.println("加密前：" + content);
+
+        String encrypt = encrypt(content, KEY);
+        System.out.println("加密后：" + encrypt);
+
+        String decrypt = decrypt(encrypt, KEY);
+        System.out.println("解密后：" + decrypt);
+    }
+
 }
