@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.RestController;
 import xyz.vaith.weeblogbackend.model.Result;
 import xyz.vaith.weeblogbackend.param.CommonPageParam;
 import xyz.vaith.weeblogbackend.param.TagParam;
+import xyz.vaith.weeblogbackend.security.SecurityBody;
 import xyz.vaith.weeblogbackend.service.TagService;
 
 import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/tag")
+@SecurityBody
 public class TagController {
 
     @Resource

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.vaith.weeblogbackend.model.Result;
+import xyz.vaith.weeblogbackend.security.SecurityBody;
 import xyz.vaith.weeblogbackend.service.ImageService;
 import xyz.vaith.weeblogbackend.util.QiniuUtil;
 

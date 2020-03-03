@@ -1,20 +1,28 @@
 package xyz.vaith.weeblogbackend.security;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.util.DigestUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice;
+import xyz.vaith.weeblogbackend.exception.BuzzException;
+import xyz.vaith.weeblogbackend.exception.SignException;
 import xyz.vaith.weeblogbackend.util.AESUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.util.Map;
 
 
 @Log4j2
@@ -42,19 +50,39 @@ public class DecodeRequestBodyAdvice implements RequestBodyAdvice {
         boolean supportSafeMessage = supportSecretRequest(methodParameter);
         String httpBody;
         if (supportSafeMessage) {
-            log.info("method: ["+ methodParameter.getMethod().getName() +"] decode");
+            log.info("method: [" + methodParameter.getMethod().getName() + "] decode");
+            HttpHeaders headers = httpInputMessage.getHeaders();
+            String info = headers.get("info").get(0);
+            String sign = headers.get("sign").get(0);
+            String infoAES;
             try {
-
-                httpBody = decryptBody(httpInputMessage);
-
-//                IOUtils.toInputStream(httpBody, "UTF-8");
-                log.info("result: " + httpBody);
-              return new SercurityHttpMessage(IOUtils.toInputStream(httpBody, "utf-8"), httpInputMessage.getHeaders());
+                infoAES = AESUtil.encrypt(info);
             } catch (Exception e) {
                 e.printStackTrace();
-                return  httpInputMessage;
+                throw new SignException("缺少头部信息");
             }
-        } else  {
+            String cs = DigestUtils.md5DigestAsHex(infoAES.getBytes());
+            if (cs.equals(sign)) {
+                log.info("签名效验成功");
+            } else {
+                throw new SignException("签名效验失败");
+            }
+
+            JSONObject object = JSONObject.parseObject(info);
+            int en = Integer.parseInt(object.get("en").toString());
+            if (en == 0) {
+                return httpInputMessage;
+            }
+
+            try {
+                httpBody = decryptBody(httpInputMessage);
+                log.info("result: " + httpBody);
+                return new SercurityHttpMessage(IOUtils.toInputStream(httpBody, "utf-8"), httpInputMessage.getHeaders());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return httpInputMessage;
+            }
+        } else {
             return httpInputMessage;
         }
     }

@@ -6,12 +6,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.vaith.weeblogbackend.model.Result;
 import xyz.vaith.weeblogbackend.param.HomeInfoParam;
+import xyz.vaith.weeblogbackend.security.SecurityBody;
 import xyz.vaith.weeblogbackend.service.HomeInfoService;
 
 import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/home")
+@SecurityBody
 public class HomeController {
 
     @Resource

@@ -16,6 +16,8 @@ public class ExceptionHandlerManager {
         log.error(e.getCause().getMessage());
         if (e instanceof BuzzException) {
             return Result.fail(e.getCause().getMessage());
+        } else if (e.getCause() instanceof SignException) {
+            return Result.fail(e.getCause().getMessage());
         } else {
             return Result.defaultFail();
         }
