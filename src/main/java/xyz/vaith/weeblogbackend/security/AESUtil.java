@@ -1,7 +1,8 @@
-package xyz.vaith.weeblogbackend.util;
+package xyz.vaith.weeblogbackend.security;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.util.DigestUtils;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -33,27 +34,14 @@ public class AESUtil {
         return new String(decryptBytes);
     }
 
-    public static String encrypt(String content) throws Exception {
+    public static String toEncryptString(String content) throws Exception {
         return encrypt(content, KEY);
     }
-    public static String decrypt(String encryptStr) throws Exception {
+    public static String toDecryptString(String encryptStr) throws Exception {
         return decrypt(encryptStr, KEY);
     }
 
-    public static void main(String[] args) throws Exception {
-        Map map=new HashMap<String,String>();
-        map.put("title","标题");
-        map.put("zw","汉字");
-        map.put("id", "23");
-
-        String content = JSONObject.toJSONString(map);
-        System.out.println("加密前：" + content);
-
-        String encrypt = encrypt(content, KEY);
-        System.out.println("加密后：" + encrypt);
-
-        String decrypt = decrypt(encrypt, KEY);
-        System.out.println("解密后：" + decrypt);
+    public static String stringToAesAndMd5(String content) throws Exception {
+       return DigestUtils.md5DigestAsHex(toEncryptString(content).getBytes());
     }
-
 }

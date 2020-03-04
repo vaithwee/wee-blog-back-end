@@ -12,17 +12,12 @@ import org.springframework.util.DigestUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice;
-import xyz.vaith.weeblogbackend.exception.BuzzException;
 import xyz.vaith.weeblogbackend.exception.SignException;
-import xyz.vaith.weeblogbackend.util.AESUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
-import java.math.BigInteger;
 import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.util.Map;
 
 
 @Log4j2
@@ -50,23 +45,20 @@ public class DecodeRequestBodyAdvice implements RequestBodyAdvice {
         boolean supportSafeMessage = supportSecretRequest(methodParameter);
         String httpBody;
         if (supportSafeMessage) {
-            log.info("method: [" + methodParameter.getMethod().getName() + "] decode");
+
+            log.info(httpInputMessage.getBody());
             HttpHeaders headers = httpInputMessage.getHeaders();
-            String info = headers.get("info").get(0);
-            String sign = headers.get("sign").get(0);
-            String infoAES;
+            String info;
+            String sign;
             try {
-                infoAES = AESUtil.encrypt(info);
+                info = headers.get("info").get(0);
+                sign = headers.get("sign").get(0);
             } catch (Exception e) {
-                e.printStackTrace();
                 throw new SignException("缺少头部信息");
             }
-            String cs = DigestUtils.md5DigestAsHex(infoAES.getBytes());
-            if (cs.equals(sign)) {
-                log.info("签名效验成功");
-            } else {
-                throw new SignException("签名效验失败");
-            }
+
+
+            log.info("info: " + info + ", sign: " + sign);
 
             JSONObject object = JSONObject.parseObject(info);
             int en = Integer.parseInt(object.get("en").toString());
@@ -74,14 +66,32 @@ public class DecodeRequestBodyAdvice implements RequestBodyAdvice {
                 return httpInputMessage;
             }
 
+
+            String infoAES;
             try {
-                httpBody = decryptBody(httpInputMessage);
-                log.info("result: " + httpBody);
-                return new SercurityHttpMessage(IOUtils.toInputStream(httpBody, "utf-8"), httpInputMessage.getHeaders());
+                infoAES = AESUtil.toEncryptString(info);
             } catch (Exception e) {
                 e.printStackTrace();
-                return httpInputMessage;
+                throw new SignException("缺少头部信息");
             }
+            String cs = DigestUtils.md5DigestAsHex(infoAES.getBytes());
+
+            try {
+                httpBody = decryptBody(httpInputMessage);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new SignException("签名效验失败");
+            }
+            String bs = DigestUtils.md5DigestAsHex(httpBody.getBytes());
+
+            String localSign = DigestUtils.md5DigestAsHex((cs + bs).getBytes());
+
+            if (localSign.equals(sign)) {
+                log.info("签名效验成功");
+            } else {
+                throw new SignException("签名效验失败");
+            }
+            return new SercurityHttpMessage(IOUtils.toInputStream(httpBody, "utf-8"), httpInputMessage.getHeaders());
         } else {
             return httpInputMessage;
         }
@@ -101,7 +111,7 @@ public class DecodeRequestBodyAdvice implements RequestBodyAdvice {
     private String decryptBody(HttpInputMessage inputMessage) throws Exception {
         InputStream encryptStream = inputMessage.getBody();
         String encryptBody = StreamUtils.copyToString(encryptStream, Charset.defaultCharset());
-        return AESUtil.decrypt(encryptBody);
+        return AESUtil.toDecryptString(encryptBody);
     }
 
 }
