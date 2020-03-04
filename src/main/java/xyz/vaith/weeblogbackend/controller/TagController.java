@@ -5,16 +5,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.vaith.weeblogbackend.model.Result;
-import xyz.vaith.weeblogbackend.param.CommonPageParam;
 import xyz.vaith.weeblogbackend.param.TagParam;
-import xyz.vaith.weeblogbackend.security.SecurityBody;
+import xyz.vaith.weeblogbackend.security.Security;
 import xyz.vaith.weeblogbackend.service.TagService;
 
 import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/tag")
-@SecurityBody
+@Security
 public class TagController {
 
     @Resource

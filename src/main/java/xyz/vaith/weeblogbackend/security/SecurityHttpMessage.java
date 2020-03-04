@@ -11,13 +11,13 @@ import java.io.InputStream;
 
 @Data
 @NoArgsConstructor
-public class SercurityHttpMessage implements HttpInputMessage {
+public class SecurityHttpMessage implements HttpInputMessage {
 
     private InputStream body;
     private HttpHeaders headers;
 
 
-    public SercurityHttpMessage(InputStream body, HttpHeaders httpHeaders) {
+    public SecurityHttpMessage(InputStream body, HttpHeaders httpHeaders) {
         this.body = body;
         this.headers = httpHeaders;
     }

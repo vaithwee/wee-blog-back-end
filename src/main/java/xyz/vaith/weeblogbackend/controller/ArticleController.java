@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.vaith.weeblogbackend.model.Result;
 import xyz.vaith.weeblogbackend.param.ArticleParam;
-import xyz.vaith.weeblogbackend.security.SecurityBody;
+import xyz.vaith.weeblogbackend.security.Security;
 import xyz.vaith.weeblogbackend.service.ArticleService;
 
 import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/article")
-@SecurityBody
+@Security
 public class ArticleController {
 
     @Resource

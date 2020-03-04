@@ -12,6 +12,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .allowedOrigins("*")
                 .allowedMethods("GET", "POST", "DELETE", "PATCH")
                 .allowCredentials(true)
+                .exposedHeaders("en")
                 .maxAge(3600);
     }
 }

@@ -3,16 +3,14 @@ package xyz.vaith.weeblogbackend.controller;
 import org.springframework.web.bind.annotation.*;
 import xyz.vaith.weeblogbackend.model.Category;
 import xyz.vaith.weeblogbackend.model.Result;
-import xyz.vaith.weeblogbackend.param.CommonPageParam;
-import xyz.vaith.weeblogbackend.security.SecurityBody;
+import xyz.vaith.weeblogbackend.security.Security;
 import xyz.vaith.weeblogbackend.service.CatergoryService;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @RestController
 @RequestMapping("/category")
-@SecurityBody
+@Security
 public class CategoryController {
 
     @Resource

@@ -27,11 +27,16 @@ public class DecodeRequestBodyAdvice implements RequestBodyAdvice {
 
 
     private boolean supportSecretRequest(MethodParameter methodParameter) {
-        if (methodParameter.getContainingClass().getAnnotation(SecurityBody.class) != null) {
-            return true;
+        Security security = methodParameter.getMethodAnnotation(Security.class);
+        if (security != null) {
+            return security.request();
         } else {
-            return methodParameter.getMethodAnnotation(SecurityBody.class) != null;
+            security = methodParameter.getContainingClass().getAnnotation(Security.class);
+            if (security != null) {
+                return security.request();
+            }
         }
+        return false;
     }
 
 
@@ -91,7 +96,7 @@ public class DecodeRequestBodyAdvice implements RequestBodyAdvice {
             } else {
                 throw new SignException("签名效验失败");
             }
-            return new SercurityHttpMessage(IOUtils.toInputStream(httpBody, "utf-8"), httpInputMessage.getHeaders());
+            return new SecurityHttpMessage(IOUtils.toInputStream(httpBody, "utf-8"), httpInputMessage.getHeaders());
         } else {
             return httpInputMessage;
         }

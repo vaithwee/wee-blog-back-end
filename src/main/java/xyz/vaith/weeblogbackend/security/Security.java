@@ -8,7 +8,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Mapping
 @Documented
-public @interface SecurityBody {
-    boolean inDecode() default true;
-    boolean outEncode() default true;
+public @interface Security {
+    boolean request() default true;
+    boolean response() default true;
 }
