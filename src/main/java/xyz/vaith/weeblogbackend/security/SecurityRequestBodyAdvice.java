@@ -3,17 +3,18 @@ package xyz.vaith.weeblogbackend.security;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.IOUtils;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.util.DigestUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice;
 import xyz.vaith.weeblogbackend.exception.SignException;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -23,10 +24,16 @@ import java.nio.charset.Charset;
 @Log4j2
 @Order(1)
 @ControllerAdvice(basePackages = "xyz.vaith.weeblogbackend.controller")
-public class DecodeRequestBodyAdvice implements RequestBodyAdvice {
+@EnableConfigurationProperties({SecurityHttpConfig.class})
+public class SecurityRequestBodyAdvice implements RequestBodyAdvice {
+
+    @Resource
+    SecurityHttpConfig securityHttpConfig;
 
 
     private boolean supportSecretRequest(MethodParameter methodParameter) {
+
+        log.info("key" + securityHttpConfig.getAccessKey());
         Security security = methodParameter.getMethodAnnotation(Security.class);
         if (security != null) {
             return security.request();
@@ -51,7 +58,6 @@ public class DecodeRequestBodyAdvice implements RequestBodyAdvice {
         String httpBody;
         if (supportSafeMessage) {
 
-            log.info(httpInputMessage.getBody());
             HttpHeaders headers = httpInputMessage.getHeaders();
             String info;
             String sign;
@@ -71,15 +77,14 @@ public class DecodeRequestBodyAdvice implements RequestBodyAdvice {
                 return httpInputMessage;
             }
 
-
             String infoAES;
             try {
-                infoAES = AESUtil.toEncryptString(info);
+                infoAES = SecurityUtil.encrypt(info, securityHttpConfig.getAccessKey());
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new SignException("缺少头部信息");
             }
-            String cs = DigestUtils.md5DigestAsHex(infoAES.getBytes());
+            String infoSign = SecurityUtil.MD5(infoAES);
 
             try {
                 httpBody = decryptBody(httpInputMessage);
@@ -87,9 +92,9 @@ public class DecodeRequestBodyAdvice implements RequestBodyAdvice {
                 e.printStackTrace();
                 throw new SignException("签名效验失败");
             }
-            String bs = DigestUtils.md5DigestAsHex(httpBody.getBytes());
+            String bs = SecurityUtil.MD5(httpBody);
 
-            String localSign = DigestUtils.md5DigestAsHex((cs + bs).getBytes());
+            String localSign = SecurityUtil.MD5(infoSign + bs);
 
             if (localSign.equals(sign)) {
                 log.info("签名效验成功");
@@ -116,7 +121,7 @@ public class DecodeRequestBodyAdvice implements RequestBodyAdvice {
     private String decryptBody(HttpInputMessage inputMessage) throws Exception {
         InputStream encryptStream = inputMessage.getBody();
         String encryptBody = StreamUtils.copyToString(encryptStream, Charset.defaultCharset());
-        return AESUtil.toDecryptString(encryptBody);
+        return SecurityUtil.decrypt(encryptBody, securityHttpConfig.getAccessKey());
     }
 
 }

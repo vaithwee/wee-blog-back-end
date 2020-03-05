@@ -4,14 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.util.DigestUtils;
 
+import javax.annotation.Resource;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AESUtil {
-    private static final String KEY = "h2uh123haj89wjoj";
+public class SecurityUtil {
+
     private static final String ALGORITHMSTR = "AES/ECB/PKCS5Padding";
 
     public static String encrypt(String content, String encryptKey) throws Exception {
@@ -34,14 +35,7 @@ public class AESUtil {
         return new String(decryptBytes);
     }
 
-    public static String toEncryptString(String content) throws Exception {
-        return encrypt(content, KEY);
-    }
-    public static String toDecryptString(String encryptStr) throws Exception {
-        return decrypt(encryptStr, KEY);
-    }
-
-    public static String stringToAesAndMd5(String content) throws Exception {
-       return DigestUtils.md5DigestAsHex(toEncryptString(content).getBytes());
+    public static String MD5(String content) {
+         return DigestUtils.md5DigestAsHex(content.getBytes());
     }
 }

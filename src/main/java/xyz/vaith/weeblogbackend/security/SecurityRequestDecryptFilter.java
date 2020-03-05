@@ -12,21 +12,23 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import xyz.vaith.weeblogbackend.exception.SignException;
 
+import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Map;
 
 @WebFilter(urlPatterns = {"/*"}, filterName = "requestDecryptFilter")
 @Log4j2
 @Configuration
-public class RequestDecryptFilter extends OncePerRequestFilter implements ApplicationContextAware {
+public class SecurityRequestDecryptFilter extends OncePerRequestFilter implements ApplicationContextAware {
+
+    @Resource
+    SecurityHttpConfig securityHttpConfig;
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 
@@ -56,16 +58,16 @@ public class RequestDecryptFilter extends OncePerRequestFilter implements Applic
 
         String js = JSONObject.toJSONString(object);
         log.info(js);
-        js = AESUtil.toEncryptString(js);
+        js = SecurityUtil.encrypt(js, securityHttpConfig.getAccessKey());
         log.info("info aes:" + js);
-        String headerSign = DigestUtils.md5DigestAsHex(js.getBytes());
+        String headerSign = SecurityUtil.MD5(js);
         log.info("info sign:" + headerSign);
 
         //2.path
         String path = httpServletRequest.getRequestURI();
-        path = AESUtil.toEncryptString(path);
+        path = SecurityUtil.encrypt(path, securityHttpConfig.getAccessKey());
         log.info("path aes:" + path);
-        String pathSign = DigestUtils.md5DigestAsHex(path.getBytes());
+        String pathSign = SecurityUtil.MD5(path);
         log.info("path sign:" + pathSign);
 
         log.info(httpServletRequest.getRequestURL());
@@ -77,41 +79,5 @@ public class RequestDecryptFilter extends OncePerRequestFilter implements Applic
             throw  new SignException("签名校验失败");
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);;
-    }
-
-    public static String readAsChars(HttpServletRequest request)
-    {
-
-        BufferedReader br = null;
-        StringBuilder sb = new StringBuilder("");
-        try
-        {
-            br = request.getReader();
-            String str;
-            while ((str = br.readLine()) != null)
-            {
-                sb.append(str);
-            }
-            br.close();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            if (null != br)
-            {
-                try
-                {
-                    br.close();
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return sb.toString();
     }
 }
