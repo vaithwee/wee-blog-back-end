@@ -6,7 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
-@PropertySource(value = {"classpath:qiniu.properties"}, ignoreResourceNotFound = false, encoding = "UTF-8")
+@PropertySource(value = {"classpath:config/qiniu.properties"}, ignoreResourceNotFound = false, encoding = "UTF-8")
 @ConfigurationProperties(prefix = "qiniu")
 @Data
 public class QiniuToken {
