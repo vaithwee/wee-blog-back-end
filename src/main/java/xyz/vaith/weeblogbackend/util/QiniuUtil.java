@@ -29,7 +29,7 @@ public class QiniuUtil {
 
     private static String bucket = "images";
     public static String mini = "imageView2/1/w/50/h/50/q/75|imageslim";
-    public static String preview = "imageView2/0/w/100/h/100/q/75|imageslim";
+    public static String preview = "imageView2/0/w/200/h/200/q/75|imageslim";
 
     private static QiniuUtil _instance;
 

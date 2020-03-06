@@ -47,4 +47,13 @@ public class HomeInfoServiceImpl implements HomeInfoService {
         map.put("articles", articles);
         return map;
     }
+
+    @Override
+    public HomeInfo updateHomeInfo(HomeInfoParam param) throws Exception {
+        HomeInfo homeInfo = homeInfoMapper.selectByPrimaryKey(param.getId());
+        homeInfo.setCoverId(param.getCoverID());
+        homeInfo.setGreeting(param.getGreeting());
+        homeInfoMapper.updateByPrimaryKey(homeInfo);
+        return homeInfo;
+    }
 }

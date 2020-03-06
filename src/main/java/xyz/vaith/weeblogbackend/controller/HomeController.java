@@ -28,4 +28,9 @@ public class HomeController {
     public Result info() throws Exception {
         return Result.success(homeInfoService.getHomeInfo());
     }
+
+    @PostMapping("/info/update")
+    public Result updateHomeInfo(@RequestBody HomeInfoParam param) throws Exception {
+        return Result.success(homeInfoService.updateHomeInfo(param));
+    }
 }
