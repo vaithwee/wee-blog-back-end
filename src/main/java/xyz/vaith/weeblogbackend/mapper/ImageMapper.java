@@ -20,4 +20,6 @@ public interface ImageMapper {
     List<Image> selectImageList(int start, int size);
 
     Image selectByArticleId(Integer id);
+
+    int selectCount();
 }

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.vaith.weeblogbackend.mapper.ImageMapper;
 import xyz.vaith.weeblogbackend.model.Image;
+import xyz.vaith.weeblogbackend.model.Page;
 import xyz.vaith.weeblogbackend.service.ImageService;
 import xyz.vaith.weeblogbackend.util.QiniuToken;
 import xyz.vaith.weeblogbackend.util.QiniuUtil;
@@ -66,9 +67,11 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public List<Image> getImageList(int page, int size) throws Exception {
+    public Page getImageList(int page, int size) throws Exception {
         List<Image> images = imageMapper.selectImageList(page * size, size);
-        return images;
+        int total = imageMapper.selectCount();
+        int totalPage = total%size == 0 ? total/size : total/size + 1;
+        return Page.<Image>builder().data(images).size(size).currentPage(page).total(total).totalPage(totalPage).build();
     }
 }
 
