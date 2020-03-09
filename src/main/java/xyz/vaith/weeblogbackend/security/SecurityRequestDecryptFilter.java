@@ -34,50 +34,54 @@ public class SecurityRequestDecryptFilter extends OncePerRequestFilter implement
 
     }
 
-    @SneakyThrows
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
 
-        if(httpServletRequest.getMethod().equals(HttpMethod.OPTIONS.toString())) {
+        if (httpServletRequest.getMethod().equals(HttpMethod.OPTIONS.toString())) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
 
-        log.info("过滤器开始");
-        log.info("path:" + httpServletRequest.getRequestURI());
-        log.info("param:" + httpServletRequest.getParameterMap());
-        log.info("header:" + httpServletRequest.getHeaderNames());
-        log.info("header:" + httpServletRequest.getHeader("info"));
-
-
-
-        //1. info
-        String info = httpServletRequest.getHeader("info");
-        Map<String, Object> object = JSONObject.parseObject(info);
-        String firstSign = object.remove("sign").toString();
-
-        String js = JSONObject.toJSONString(object);
-        log.info(js);
-        js = SecurityUtil.encrypt(js, securityHttpConfig.getAccessKey());
-        log.info("info aes:" + js);
-        String headerSign = SecurityUtil.MD5(js);
-        log.info("info sign:" + headerSign);
-
-        //2.path
-        String path = httpServletRequest.getRequestURI();
-        path = SecurityUtil.encrypt(path, securityHttpConfig.getAccessKey());
-        log.info("path aes:" + path);
-        String pathSign = SecurityUtil.MD5(path);
-        log.info("path sign:" + pathSign);
-
-        log.info(httpServletRequest.getRequestURL());
-
-        String s = DigestUtils.md5DigestAsHex((headerSign + pathSign).getBytes());
-        if (s.equals(firstSign)) {
-            log.info("首层签名效验成功");
-        } else  {
-            throw  new SignException("签名校验失败");
+        if (httpServletRequest.getRequestURI().equals("security/error")) {
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
+            return;
         }
-        filterChain.doFilter(httpServletRequest, httpServletResponse);;
+
+
+        try {
+            //1. info
+            String info = httpServletRequest.getHeader("info");
+            Map<String, Object> object = JSONObject.parseObject(info);
+            String firstSign = object.remove("sign").toString();
+
+            String js = JSONObject.toJSONString(object);
+            log.info(js);
+            js = SecurityUtil.encrypt(js, securityHttpConfig.getAccessKey());
+            log.info("info aes:" + js);
+            String headerSign = SecurityUtil.MD5(js);
+            log.info("info sign:" + headerSign);
+
+            //2.path
+            String path = httpServletRequest.getRequestURI();
+            path = SecurityUtil.encrypt(path, securityHttpConfig.getAccessKey());
+            log.info("path aes:" + path);
+            String pathSign = SecurityUtil.MD5(path);
+            log.info("path sign:" + pathSign);
+
+            log.info(httpServletRequest.getRequestURL());
+
+            String s = DigestUtils.md5DigestAsHex((headerSign + pathSign).getBytes());
+            if (s.equals(firstSign)) {
+                log.info("首层签名效验成功");
+            } else {
+                throw new SignException("签名校验失败");
+            }
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
+        } catch (Exception e) {
+            httpServletRequest.setAttribute("error", new SignException("签名校验失败"));
+            httpServletRequest.getRequestDispatcher("/security/error").forward(httpServletRequest, httpServletResponse);
+        }
+
+
     }
 }
