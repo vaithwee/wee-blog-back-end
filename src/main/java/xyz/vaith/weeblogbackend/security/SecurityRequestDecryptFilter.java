@@ -7,6 +7,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -24,6 +25,7 @@ import java.util.Map;
 @WebFilter(urlPatterns = {"/*"}, filterName = "requestDecryptFilter")
 @Log4j2
 @Configuration
+@Order(2)
 public class SecurityRequestDecryptFilter extends OncePerRequestFilter implements ApplicationContextAware {
 
     @Resource

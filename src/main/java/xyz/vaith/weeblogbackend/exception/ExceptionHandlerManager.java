@@ -13,11 +13,11 @@ public class ExceptionHandlerManager {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public Result handleException(Exception e) {
-        log.error(e.getCause().getMessage());
+        log.error(e.getMessage());
         if (e instanceof BuzzException) {
-            return Result.fail(e.getCause().getMessage());
+            return Result.fail(e.getMessage());
         } else if (e.getCause() instanceof SignException) {
-            return Result.fail(e.getCause().getMessage());
+            return Result.fail(e.getMessage());
         } else {
             return Result.defaultFail();
         }
