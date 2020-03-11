@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import xyz.vaith.weeblogbackend.authority.Authority;
 import xyz.vaith.weeblogbackend.model.Result;
 import xyz.vaith.weeblogbackend.param.TestParam;
 import xyz.vaith.weeblogbackend.security.Security;
@@ -14,6 +15,7 @@ import java.util.Map;
 @Security
 @RequestMapping("/test")
 @RestController
+@Authority
 public class TestController {
     @PostMapping("/sec")
     public Result sec(@RequestBody TestParam param) {
