@@ -1,6 +1,7 @@
 package xyz.vaith.weeblogbackend.controller;
 
 import org.springframework.web.bind.annotation.*;
+import xyz.vaith.weeblogbackend.authority.Authority;
 import xyz.vaith.weeblogbackend.authority.AuthorityJWTUtil;
 import xyz.vaith.weeblogbackend.model.Result;
 import xyz.vaith.weeblogbackend.param.UserParam;
@@ -22,6 +23,7 @@ public class UserSystemController {
 
     }
 
+    @Authority
     @GetMapping("/valid")
     public Result valid(HttpServletRequest request) {
         String token = request.getHeader("token");

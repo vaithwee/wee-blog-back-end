@@ -1,6 +1,7 @@
 package xyz.vaith.weeblogbackend.controller;
 
 import org.springframework.web.bind.annotation.*;
+import xyz.vaith.weeblogbackend.authority.Authority;
 import xyz.vaith.weeblogbackend.model.Category;
 import xyz.vaith.weeblogbackend.model.Result;
 import xyz.vaith.weeblogbackend.security.Security;
@@ -8,6 +9,7 @@ import xyz.vaith.weeblogbackend.service.CatergoryService;
 
 import javax.annotation.Resource;
 
+@Authority
 @RestController
 @RequestMapping("/category")
 @Security

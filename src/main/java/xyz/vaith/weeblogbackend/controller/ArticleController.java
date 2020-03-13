@@ -2,6 +2,7 @@ package xyz.vaith.weeblogbackend.controller;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
+import xyz.vaith.weeblogbackend.authority.Authority;
 import xyz.vaith.weeblogbackend.model.Result;
 import xyz.vaith.weeblogbackend.param.ArticleParam;
 import xyz.vaith.weeblogbackend.security.Security;
@@ -9,6 +10,7 @@ import xyz.vaith.weeblogbackend.service.ArticleService;
 
 import javax.annotation.Resource;
 
+@Authority
 @RestController
 @RequestMapping("/article")
 @Security
