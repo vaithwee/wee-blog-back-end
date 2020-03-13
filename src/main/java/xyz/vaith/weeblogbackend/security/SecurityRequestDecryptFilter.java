@@ -44,7 +44,7 @@ public class SecurityRequestDecryptFilter extends OncePerRequestFilter implement
             return;
         }
 
-        if (httpServletRequest.getRequestURI().equals("security/error")) {
+        if (httpServletRequest.getRequestURI().equals("/error")) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
@@ -80,8 +80,9 @@ public class SecurityRequestDecryptFilter extends OncePerRequestFilter implement
             }
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         } catch (Exception e) {
+            log.info("首层签名效验失败");
             httpServletRequest.setAttribute("error", new SignException("签名校验失败"));
-            httpServletRequest.getRequestDispatcher("/security/error").forward(httpServletRequest, httpServletResponse);
+            httpServletRequest.getRequestDispatcher("/error").forward(httpServletRequest, httpServletResponse);
         }
 
 

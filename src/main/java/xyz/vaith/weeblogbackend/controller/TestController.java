@@ -15,13 +15,14 @@ import java.util.Map;
 @Security
 @RequestMapping("/test")
 @RestController
-@Authority
+
 public class TestController {
     @PostMapping("/sec")
     public Result sec(@RequestBody TestParam param) {
         return Result.success(param);
     }
 
+    @Authority
     @RequestMapping("/noen")
     @Security(response = false)
     public Result sec() {

@@ -9,5 +9,6 @@ import java.lang.annotation.*;
 @Mapping
 @Documented
 public @interface Authority {
+    boolean enable() default true;
     String role() default "admin";
 }

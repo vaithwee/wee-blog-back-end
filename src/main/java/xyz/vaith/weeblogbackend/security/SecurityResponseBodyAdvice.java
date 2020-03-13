@@ -2,7 +2,9 @@ package xyz.vaith.weeblogbackend.security;
 
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -14,12 +16,14 @@ import java.util.List;
 import java.util.Map;
 
 @ControllerAdvice(basePackages = "xyz.vaith.weeblogbackend.controller")
+@Log4j2
 public class SecurityResponseBodyAdvice implements ResponseBodyAdvice {
 
     @Resource
     SecurityHttpConfig securityHttpConfig;
 
     private boolean supportSecretResponse(MethodParameter methodParameter) {
+        log.info("请求结果加密");
         Security security = methodParameter.getMethodAnnotation(Security.class);
         if (security != null) {
             return security.response();
@@ -39,6 +43,7 @@ public class SecurityResponseBodyAdvice implements ResponseBodyAdvice {
 
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
+        serverHttpResponse.setStatusCode(HttpStatus.OK);
         if (supportSecretResponse(methodParameter)) {
 
             List<String> info = serverHttpRequest.getHeaders().get("info");
@@ -61,6 +66,7 @@ public class SecurityResponseBodyAdvice implements ResponseBodyAdvice {
             }
         } else  {
             serverHttpResponse.getHeaders().set("en", "0");
+
             return body;
         }
     }
