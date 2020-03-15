@@ -26,7 +26,7 @@ public class BlogController {
     ArticleService articleService;
 
 
-    @Cacheable("bloghomeinfo")
+//    @Cacheable("bloghomeinfo")
     @RequestMapping("/info")
     public Result home() throws Exception {
        log.info("现在还没有走缓存哦");
