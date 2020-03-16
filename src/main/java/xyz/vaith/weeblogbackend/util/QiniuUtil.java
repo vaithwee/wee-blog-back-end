@@ -61,6 +61,6 @@ public class QiniuUtil {
     }
 
     public String getLimitURL(String key, String limit) {
-        return auth.privateDownloadUrl("http://image.vaith.xyz/" + key + "?" + limit);
+        return auth.privateDownloadUrl("http://image.vaith.xyz/" + key + "?" + limit, 120);
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import xyz.vaith.weeblogbackend.cache.Cache;
 import xyz.vaith.weeblogbackend.model.Result;
 import xyz.vaith.weeblogbackend.security.Security;
 import xyz.vaith.weeblogbackend.service.ArticleService;
@@ -26,10 +27,9 @@ public class BlogController {
     ArticleService articleService;
 
 
-//    @Cacheable("bloghomeinfo")
+
     @RequestMapping("/info")
     public Result home() throws Exception {
-       log.info("现在还没有走缓存哦");
         return Result.success(blogService.homeInfo());
     }
 

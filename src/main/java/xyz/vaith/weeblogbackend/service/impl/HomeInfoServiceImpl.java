@@ -1,6 +1,8 @@
 package xyz.vaith.weeblogbackend.service.impl;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
+import xyz.vaith.weeblogbackend.cache.Cache;
 import xyz.vaith.weeblogbackend.mapper.ArticleMapper;
 import xyz.vaith.weeblogbackend.mapper.HomeInfoMapper;
 import xyz.vaith.weeblogbackend.mapper.ImageMapper;
@@ -29,6 +31,7 @@ public class HomeInfoServiceImpl implements HomeInfoService {
     ArticleMapper articleMapper;
 
     @Override
+    @CacheEvict(Cache.Key.HOME_INFO)
     public HomeInfo addHomeInfo(HomeInfoParam param) throws Exception {
         HomeInfo homeInfo = HomeInfo.builder().coverId(param.getCoverID()).greeting(param.getGreeting()).createDate(new Date()).updateDate((new Date())).build();
         homeInfoMapper.insert(homeInfo);
@@ -49,6 +52,7 @@ public class HomeInfoServiceImpl implements HomeInfoService {
     }
 
     @Override
+    @CacheEvict(Cache.Key.HOME_INFO)
     public HomeInfo updateHomeInfo(HomeInfoParam param) throws Exception {
         HomeInfo homeInfo = homeInfoMapper.selectByPrimaryKey(param.getId());
         homeInfo.setCoverId(param.getCoverID());
