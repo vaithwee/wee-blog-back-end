@@ -9,6 +9,7 @@ import xyz.vaith.weeblogbackend.cache.Cache;
 import xyz.vaith.weeblogbackend.mapper.ArticleMapper;
 import xyz.vaith.weeblogbackend.mapper.HomeInfoMapper;
 import xyz.vaith.weeblogbackend.model.Article;
+import xyz.vaith.weeblogbackend.redis.WeeCacheExpire;
 import xyz.vaith.weeblogbackend.service.BlogService;
 
 import javax.annotation.Resource;
@@ -29,7 +30,8 @@ public class BlogServiceImpl implements BlogService {
 
 
     @Override
-    @Cacheable(value = Cache.Key.HOME_INFO, key = "0")
+    @Cacheable("test")
+    @WeeCacheExpire(expire = 60)
     public Map<String, Object> homeInfo() throws Exception {
         log.info("获取首页信息");
         Map<String, Object> json = new HashMap<>();

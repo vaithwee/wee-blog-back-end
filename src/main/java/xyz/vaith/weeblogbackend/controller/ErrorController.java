@@ -44,7 +44,7 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public Result handleException(Exception e) {
-//        log.error(e);
+        log.error(e);
         if (e instanceof BuzzException) {
             return Result.fail(e.getMessage());
         } else if (e.getCause() instanceof SignException) {
