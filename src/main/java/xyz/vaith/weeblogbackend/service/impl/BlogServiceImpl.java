@@ -4,12 +4,11 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import xyz.vaith.weeblogbackend.cache.Cache;
 import xyz.vaith.weeblogbackend.mapper.ArticleMapper;
 import xyz.vaith.weeblogbackend.mapper.HomeInfoMapper;
 import xyz.vaith.weeblogbackend.model.Article;
-import xyz.vaith.weeblogbackend.redis.WeeCacheExpire;
+import xyz.vaith.weeblogbackend.redis.CacheExpire;
+import xyz.vaith.weeblogbackend.redis.RedisCacheKeys;
 import xyz.vaith.weeblogbackend.service.BlogService;
 
 import javax.annotation.Resource;
@@ -30,8 +29,7 @@ public class BlogServiceImpl implements BlogService {
 
 
     @Override
-    @Cacheable("test")
-    @WeeCacheExpire(expire = 60)
+    @Cacheable(RedisCacheKeys.HOME_INFO)
     public Map<String, Object> homeInfo() throws Exception {
         log.info("获取首页信息");
         Map<String, Object> json = new HashMap<>();

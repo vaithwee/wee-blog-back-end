@@ -8,7 +8,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-public @interface WeeCacheExpire {
+public @interface CacheExpire {
     @AliasFor("expire")
     long value() default 60L;
 

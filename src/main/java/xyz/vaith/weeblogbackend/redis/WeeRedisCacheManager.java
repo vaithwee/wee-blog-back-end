@@ -57,7 +57,9 @@ public class WeeRedisCacheManager extends RedisCacheManager implements Applicati
     @Override
     public void afterPropertiesSet() {
         String[] beanNames = applicationContext.getBeanNamesForType(Object.class);
+
         for (String beanName : beanNames) {
+            log.info(beanName);
             final Class clazz = applicationContext.getType(beanName);
             add(clazz);
         }
@@ -74,9 +76,10 @@ public class WeeRedisCacheManager extends RedisCacheManager implements Applicati
     }
 
     private void add(final Class clazz) {
+//        log.info(clazz);
         ReflectionUtils.doWithMethods(clazz, method -> {
             ReflectionUtils.makeAccessible(method);
-            WeeCacheExpire cacheExpire = AnnotationUtils.findAnnotation(method, WeeCacheExpire.class);
+            CacheExpire cacheExpire = AnnotationUtils.findAnnotation(method, CacheExpire.class);
             if (cacheExpire == null) {
                 return;
             }
@@ -101,10 +104,16 @@ public class WeeRedisCacheManager extends RedisCacheManager implements Applicati
                     add(cacheConfig.cacheNames(), cacheExpire);
                 }
             }
-        }, method -> null != AnnotationUtils.findAnnotation(method, WeeCacheExpire.class));
+        }, method -> {
+            boolean isdd =  null != AnnotationUtils.findAnnotation(method, CacheExpire.class);
+            if (isdd) {
+                log.info(method);
+            }
+            return isdd;
+        });
     }
 
-    private void add(String[] cacheNames, WeeCacheExpire cacheExpire) {
+    private void add(String[] cacheNames, CacheExpire cacheExpire) {
         for (String cacheName : cacheNames) {
             if (cacheName == null || "".equals(cacheName.trim())) {
                 continue;

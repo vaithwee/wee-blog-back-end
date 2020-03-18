@@ -2,7 +2,6 @@ package xyz.vaith.weeblogbackend.service.impl;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
-import xyz.vaith.weeblogbackend.cache.Cache;
 import xyz.vaith.weeblogbackend.mapper.ArticleMapper;
 import xyz.vaith.weeblogbackend.mapper.HomeInfoMapper;
 import xyz.vaith.weeblogbackend.mapper.ImageMapper;
@@ -10,6 +9,7 @@ import xyz.vaith.weeblogbackend.model.Article;
 import xyz.vaith.weeblogbackend.model.HomeInfo;
 import xyz.vaith.weeblogbackend.model.Image;
 import xyz.vaith.weeblogbackend.param.HomeInfoParam;
+import xyz.vaith.weeblogbackend.redis.RedisCacheKeys;
 import xyz.vaith.weeblogbackend.service.HomeInfoService;
 
 import javax.annotation.Resource;
@@ -31,7 +31,7 @@ public class HomeInfoServiceImpl implements HomeInfoService {
     ArticleMapper articleMapper;
 
     @Override
-    @CacheEvict(Cache.Key.HOME_INFO)
+    @CacheEvict(value = RedisCacheKeys.HOME_INFO, allEntries = true)
     public HomeInfo addHomeInfo(HomeInfoParam param) throws Exception {
         HomeInfo homeInfo = HomeInfo.builder().coverId(param.getCoverID()).greeting(param.getGreeting()).createDate(new Date()).updateDate((new Date())).build();
         homeInfoMapper.insert(homeInfo);
@@ -52,7 +52,7 @@ public class HomeInfoServiceImpl implements HomeInfoService {
     }
 
     @Override
-    @CacheEvict(Cache.Key.HOME_INFO)
+    @CacheEvict(value = RedisCacheKeys.HOME_INFO, allEntries = true)
     public HomeInfo updateHomeInfo(HomeInfoParam param) throws Exception {
         HomeInfo homeInfo = homeInfoMapper.selectByPrimaryKey(param.getId());
         homeInfo.setCoverId(param.getCoverID());
