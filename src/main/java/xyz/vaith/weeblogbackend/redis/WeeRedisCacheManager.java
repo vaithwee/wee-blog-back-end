@@ -59,7 +59,6 @@ public class WeeRedisCacheManager extends RedisCacheManager implements Applicati
         String[] beanNames = applicationContext.getBeanNamesForType(Object.class);
 
         for (String beanName : beanNames) {
-            log.info(beanName);
             final Class clazz = applicationContext.getType(beanName);
             add(clazz);
         }
