@@ -146,7 +146,7 @@
   </update>
 
   <select id="selectImageList" resultMap="BaseResultMap">
-    select * from image limit #{param1}, #{param2}
+    select * from image order by id desc limit #{param1}, #{param2}
   </select>
 
   <select id="selectByArticleId" resultMap="BaseResultMap">

@@ -3,6 +3,7 @@ package xyz.vaith.weeblogbackend.service.impl;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,6 +54,10 @@ public class ImageServiceImpl implements ImageService {
         String contentType = file.getContentType();
         Long length = file.getSize();
 
+        if (filename == null || filename.length() == 0) {
+            filename = file.getOriginalFilename().replace("." + ext, "");
+        }
+
         File target = new File(tmp, nfn);
         file.transferTo(target);
 
@@ -67,7 +72,9 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    @Cacheable(value = "getImageList", key = "#p0-#p1")
     public Page getImageList(int page, int size) throws Exception {
+        log.info("图片缓存生成");
         List<Image> images = imageMapper.selectImageList(page * size, size);
         int total = imageMapper.selectCount();
         int totalPage = total%size == 0 ? total/size : total/size + 1;
