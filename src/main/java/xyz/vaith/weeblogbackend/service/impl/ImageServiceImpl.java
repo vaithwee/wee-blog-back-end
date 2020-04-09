@@ -1,8 +1,10 @@
 package xyz.vaith.weeblogbackend.service.impl;
 
 import lombok.extern.log4j.Log4j2;
+import org.apache.ibatis.cache.CacheKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import xyz.vaith.weeblogbackend.mapper.ImageMapper;
 import xyz.vaith.weeblogbackend.model.Image;
 import xyz.vaith.weeblogbackend.model.Page;
+import xyz.vaith.weeblogbackend.redis.RedisCacheKeys;
 import xyz.vaith.weeblogbackend.service.ImageService;
 import xyz.vaith.weeblogbackend.util.QiniuToken;
 import xyz.vaith.weeblogbackend.util.QiniuUtil;
@@ -35,6 +38,7 @@ public class ImageServiceImpl implements ImageService {
     QiniuToken token;
 
     @Override
+    @CacheEvict(value = RedisCacheKeys.IMAGE_LIST, allEntries = true)
     public Image saveImageFileToBucket(MultipartFile file, String filename, String tmp) throws Exception {
 
         log.info(token.getSecretKey());
@@ -72,13 +76,19 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    @Cacheable(value = "getImageList", key = "#p0-#p1")
-    public Page getImageList(int page, int size) throws Exception {
+    @Cacheable(value = RedisCacheKeys.IMAGE_LIST, key = "#page")
+    public Page<Image> getImageList(int page, int size) throws Exception {
         log.info("图片缓存生成");
         List<Image> images = imageMapper.selectImageList(page * size, size);
         int total = imageMapper.selectCount();
         int totalPage = total%size == 0 ? total/size : total/size + 1;
         return Page.<Image>builder().data(images).size(size).currentPage(page).total(total).totalPage(totalPage).build();
+    }
+
+    @Override
+    @CacheEvict(value = RedisCacheKeys.IMAGE_LIST, allEntries = true)
+    public void deleteImage(int id) throws Exception {
+        imageMapper.deleteByPrimaryKey(id);
     }
 }
 
