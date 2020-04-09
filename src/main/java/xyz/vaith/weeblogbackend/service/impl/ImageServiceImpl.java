@@ -23,6 +23,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -67,7 +68,7 @@ public class ImageServiceImpl implements ImageService {
 
         String key  = QiniuUtil.defaultUtil().uploadFile(target);
         BufferedImage bi = ImageIO.read(new FileInputStream(target));
-        Image image = Image.builder().name(nfn).contentType(contentType).length(length).server(1).bucket("image").key(key).width((double) bi.getWidth()).heigth((double) bi.getHeight()).originalName(filename).build();
+        Image image = Image.builder().createDate(new Date()).updateDate(new Date()).name(nfn).contentType(contentType).length(length).server(1).bucket("image").key(key).width((double) bi.getWidth()).height((double) bi.getHeight()).originalName(filename).build();
         imageMapper.insert(image);
         image.setPreviewURL(QiniuUtil.defaultUtil().getLimitURL(key, QiniuUtil.preview));
         image.setOriginalURL(QiniuUtil.defaultUtil().getOriginalURL(key));

@@ -1,6 +1,7 @@
 package xyz.vaith.weeblogbackend.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +32,7 @@ public class Image implements Serializable {
 
     private Double width;
 
-    private Double heigth;
+    private Double height;
 
     private Integer server;
 
@@ -40,6 +41,10 @@ public class Image implements Serializable {
     private String previewURL;
 
     private String originalURL;
+
+    private Date createDate;
+
+    private Date updateDate;
 
     public String getKey() {
         return key;

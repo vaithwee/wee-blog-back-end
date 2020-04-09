@@ -7,18 +7,20 @@
     <result column="original_name" jdbcType="VARCHAR" property="originalName" />
     <result column="key" jdbcType="VARCHAR" property="key" />
     <result column="content_type" jdbcType="VARCHAR" property="contentType" />
-    <result column="length" jdbcType="BIGINT" property="length" />
+    <result column="length" jdbcType="INTEGER" property="length" />
     <result column="width" jdbcType="DOUBLE" property="width" />
-    <result column="heigth" jdbcType="DOUBLE" property="heigth" />
+    <result column="height" jdbcType="DOUBLE" property="height" />
     <result column="server" jdbcType="INTEGER" property="server" />
     <result column="bucket" jdbcType="VARCHAR" property="bucket" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, `name`, original_name, `key`, content_type, `length`, width, heigth, server,
-    bucket
+    id, `name`, original_name, `key`, content_type, `length`, width, height, server, 
+    bucket, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
     from image
     where id = #{id,jdbcType=INTEGER}
@@ -28,14 +30,14 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="xyz.vaith.weeblogbackend.model.Image" useGeneratedKeys="true">
-    insert into image (`name`, original_name, `key`,
-      content_type, `length`, width,
-      heigth, server, bucket
-      )
-    values (#{name,jdbcType=VARCHAR}, #{originalName,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR},
-      #{contentType,jdbcType=VARCHAR}, #{length,jdbcType=BIGINT}, #{width,jdbcType=DOUBLE},
-      #{heigth,jdbcType=DOUBLE}, #{server,jdbcType=INTEGER}, #{bucket,jdbcType=VARCHAR}
-      )
+    insert into image (`name`, original_name, `key`, 
+      content_type, `length`, width, 
+      height, server, bucket, 
+      create_date, update_date)
+    values (#{name,jdbcType=VARCHAR}, #{originalName,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, 
+      #{contentType,jdbcType=VARCHAR}, #{length,jdbcType=INTEGER}, #{width,jdbcType=DOUBLE}, 
+      #{height,jdbcType=DOUBLE}, #{server,jdbcType=INTEGER}, #{bucket,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="xyz.vaith.weeblogbackend.model.Image" useGeneratedKeys="true">
     insert into image
@@ -58,14 +60,20 @@
       <if test="width != null">
         width,
       </if>
-      <if test="heigth != null">
-        heigth,
+      <if test="height != null">
+        height,
       </if>
       <if test="server != null">
         server,
       </if>
       <if test="bucket != null">
         bucket,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -82,19 +90,25 @@
         #{contentType,jdbcType=VARCHAR},
       </if>
       <if test="length != null">
-        #{length,jdbcType=BIGINT},
+        #{length,jdbcType=INTEGER},
       </if>
       <if test="width != null">
         #{width,jdbcType=DOUBLE},
       </if>
-      <if test="heigth != null">
-        #{heigth,jdbcType=DOUBLE},
+      <if test="height != null">
+        #{height,jdbcType=DOUBLE},
       </if>
       <if test="server != null">
         #{server,jdbcType=INTEGER},
       </if>
       <if test="bucket != null">
         #{bucket,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -114,19 +128,25 @@
         content_type = #{contentType,jdbcType=VARCHAR},
       </if>
       <if test="length != null">
-        `length` = #{length,jdbcType=BIGINT},
+        `length` = #{length,jdbcType=INTEGER},
       </if>
       <if test="width != null">
         width = #{width,jdbcType=DOUBLE},
       </if>
-      <if test="heigth != null">
-        heigth = #{heigth,jdbcType=DOUBLE},
+      <if test="height != null">
+        height = #{height,jdbcType=DOUBLE},
       </if>
       <if test="server != null">
         server = #{server,jdbcType=INTEGER},
       </if>
       <if test="bucket != null">
         bucket = #{bucket,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -137,11 +157,13 @@
       original_name = #{originalName,jdbcType=VARCHAR},
       `key` = #{key,jdbcType=VARCHAR},
       content_type = #{contentType,jdbcType=VARCHAR},
-      `length` = #{length,jdbcType=BIGINT},
+      `length` = #{length,jdbcType=INTEGER},
       width = #{width,jdbcType=DOUBLE},
-      heigth = #{heigth,jdbcType=DOUBLE},
+      height = #{height,jdbcType=DOUBLE},
       server = #{server,jdbcType=INTEGER},
-      bucket = #{bucket,jdbcType=VARCHAR}
+      bucket = #{bucket,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -159,5 +181,4 @@
   <select id="selectCount" resultType="int">
     select count(*) from image;
   </select>
-
 </mapper>
