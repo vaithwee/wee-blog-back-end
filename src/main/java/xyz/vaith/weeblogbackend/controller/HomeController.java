@@ -1,12 +1,11 @@
 package xyz.vaith.weeblogbackend.controller;
 
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.vaith.weeblogbackend.authority.Authority;
-import xyz.vaith.weeblogbackend.model.Result;
+import xyz.vaith.weeblogbackend.result.Result;
 import xyz.vaith.weeblogbackend.param.HomeInfoParam;
 import xyz.vaith.weeblogbackend.security.Security;
 import xyz.vaith.weeblogbackend.service.HomeInfoService;

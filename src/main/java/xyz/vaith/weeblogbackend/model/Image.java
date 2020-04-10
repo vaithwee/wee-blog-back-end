@@ -7,11 +7,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import xyz.vaith.weeblogbackend.enumerate.ImageAccessType;
 import xyz.vaith.weeblogbackend.util.QiniuUtil;
 
 /**
  * image
- * @author
+ * @author 
  */
 @Data
 @AllArgsConstructor
@@ -41,6 +42,8 @@ public class Image implements Serializable {
     private String previewURL;
 
     private String originalURL;
+
+    private ImageAccessType type;
 
     private Date createDate;
 

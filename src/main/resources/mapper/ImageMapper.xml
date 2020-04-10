@@ -12,12 +12,13 @@
     <result column="height" jdbcType="DOUBLE" property="height" />
     <result column="server" jdbcType="INTEGER" property="server" />
     <result column="bucket" jdbcType="VARCHAR" property="bucket" />
+    <result column="type" jdbcType="INTEGER" property="type" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
     id, `name`, original_name, `key`, content_type, `length`, width, height, server, 
-    bucket, create_date, update_date
+    bucket, `type`, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -27,17 +28,19 @@
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from image
-    where id = #{id,jdbcType=INTEGER};
+    where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="xyz.vaith.weeblogbackend.model.Image" useGeneratedKeys="true">
     insert into image (`name`, original_name, `key`, 
       content_type, `length`, width, 
       height, server, bucket, 
-      create_date, update_date)
+      `type`, create_date, update_date
+      )
     values (#{name,jdbcType=VARCHAR}, #{originalName,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, 
       #{contentType,jdbcType=VARCHAR}, #{length,jdbcType=INTEGER}, #{width,jdbcType=DOUBLE}, 
       #{height,jdbcType=DOUBLE}, #{server,jdbcType=INTEGER}, #{bucket,jdbcType=VARCHAR}, 
-      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+      #{type,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="xyz.vaith.weeblogbackend.model.Image" useGeneratedKeys="true">
     insert into image
@@ -68,6 +71,9 @@
       </if>
       <if test="bucket != null">
         bucket,
+      </if>
+      <if test="type != null">
+        `type`,
       </if>
       <if test="createDate != null">
         create_date,
@@ -103,6 +109,9 @@
       </if>
       <if test="bucket != null">
         #{bucket,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
@@ -142,6 +151,9 @@
       <if test="bucket != null">
         bucket = #{bucket,jdbcType=VARCHAR},
       </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER},
+      </if>
       <if test="createDate != null">
         create_date = #{createDate,jdbcType=TIMESTAMP},
       </if>
@@ -162,6 +174,7 @@
       height = #{height,jdbcType=DOUBLE},
       server = #{server,jdbcType=INTEGER},
       bucket = #{bucket,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=INTEGER},
       create_date = #{createDate,jdbcType=TIMESTAMP},
       update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

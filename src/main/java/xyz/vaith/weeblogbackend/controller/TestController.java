@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.vaith.weeblogbackend.authority.Authority;
-import xyz.vaith.weeblogbackend.model.Result;
+import xyz.vaith.weeblogbackend.result.Result;
 import xyz.vaith.weeblogbackend.param.TestParam;
 import xyz.vaith.weeblogbackend.security.Security;
 

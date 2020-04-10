@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import xyz.vaith.weeblogbackend.exception.BuzzException;
 import xyz.vaith.weeblogbackend.mapper.CategoryMapper;
 import xyz.vaith.weeblogbackend.model.Category;
-import xyz.vaith.weeblogbackend.model.Result;
 import xyz.vaith.weeblogbackend.service.CatergoryService;
 
 import javax.annotation.Resource;

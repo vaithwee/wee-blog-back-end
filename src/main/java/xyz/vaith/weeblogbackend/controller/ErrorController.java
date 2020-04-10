@@ -1,20 +1,16 @@
 package xyz.vaith.weeblogbackend.controller;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import xyz.vaith.weeblogbackend.exception.BuzzException;
 import xyz.vaith.weeblogbackend.exception.SignException;
-import xyz.vaith.weeblogbackend.model.Result;
+import xyz.vaith.weeblogbackend.result.Result;
 import xyz.vaith.weeblogbackend.security.Security;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 
 @RestController

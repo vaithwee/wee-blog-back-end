@@ -10,6 +10,7 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import lombok.extern.log4j.Log4j2;
+import xyz.vaith.weeblogbackend.enumerate.ImageAccessType;
 
 import java.io.File;
 import java.util.UUID;
@@ -56,7 +57,7 @@ public class QiniuUtil {
         return putRet.key;
     }
 
-    public void delete(String key) throws Exception {
+    public void delete(String key, ImageAccessType type) throws Exception {
         bucketManager.delete(private_bucket, key);
     }
 

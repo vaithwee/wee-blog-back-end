@@ -1,4 +1,4 @@
-package xyz.vaith.weeblogbackend.model;
+package xyz.vaith.weeblogbackend.result;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -9,6 +9,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import xyz.vaith.weeblogbackend.enumerate.EnumUtils;
+import xyz.vaith.weeblogbackend.enumerate.ImageAccessType;
 import xyz.vaith.weeblogbackend.exception.BuzzException;
 import xyz.vaith.weeblogbackend.mapper.ArticleCoverMapper;
 import xyz.vaith.weeblogbackend.mapper.HomeInfoMapper;
@@ -78,7 +80,18 @@ public class ImageServiceImpl implements ImageService {
 
         String key = QiniuUtil.defaultUtil().uploadFile(target, type);
         BufferedImage bi = ImageIO.read(new FileInputStream(target));
-        Image image = Image.builder().createDate(new Date()).updateDate(new Date()).name(nfn).contentType(contentType).length(length).server(1).bucket("image").key(key).width((double) bi.getWidth()).height((double) bi.getHeight()).originalName(filename).build();
+        Image image = Image.builder().createDate(new Date())
+                .updateDate(new Date())
+                .name(nfn)
+                .contentType(contentType)
+                .length(length)
+                .server(1)
+                .bucket("image")
+                .key(key)
+                .width((double) bi.getWidth())
+                .height((double) bi.getHeight())
+                .type(EnumUtils.codeOf(ImageAccessType.class, type))
+                .originalName(filename).build();
         imageMapper.insert(image);
         image.setPreviewURL(QiniuUtil.defaultUtil().getLimitURL(key, QiniuUtil.preview));
         image.setOriginalURL(QiniuUtil.defaultUtil().getOriginalURL(key));
@@ -104,7 +117,7 @@ public class ImageServiceImpl implements ImageService {
             articleCoverMapper.deleteByImageId(image.getId());
             homeInfoMapper.deleteByImageId(image.getId());
             imageMapper.deleteByPrimaryKey(image.getId());
-            QiniuUtil.defaultUtil().delete(image.getKey());
+            QiniuUtil.defaultUtil().delete(image.getKey(), image.getType());
         } else  {
             throw new BuzzException("图片ID不存在");
         }
