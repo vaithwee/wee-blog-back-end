@@ -52,14 +52,14 @@ public class Image implements Serializable {
     private Date updateDate;
 
     public String getPreviewURL() {
-        if (previewURL == null) {
+        if (previewURL == null && type != null) {
             previewURL = QiniuUtil.defaultUtil().getLimitURL(key, QiniuUtil.preview, type);
         }
         return previewURL;
     }
 
     public String getOriginalURL() {
-        if (originalURL == null) {
+        if (originalURL == null && type != null) {
             originalURL = QiniuUtil.defaultUtil().getOriginalURL(key, type);
         }
         return originalURL;

@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : Dokcer-Mysql
+ Source Server         : Localhost
  Source Server Type    : MySQL
  Source Server Version : 80017
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 09/04/2020 22:10:29
+ Date: 10/04/2020 18:45:51
 */
 
 SET NAMES utf8mb4;
@@ -28,7 +28,7 @@ CREATE TABLE `article` (
   `create_date` datetime DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for article_category
@@ -45,7 +45,7 @@ CREATE TABLE `article_category` (
   KEY `article_category_category_id` (`category_Id`),
   CONSTRAINT `article_category_article_id` FOREIGN KEY (`article_id`) REFERENCES `article` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `article_category_category_id` FOREIGN KEY (`category_Id`) REFERENCES `category` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for article_cover
@@ -62,7 +62,7 @@ CREATE TABLE `article_cover` (
   KEY `article_cover_image_id` (`image_id`),
   CONSTRAINT `article_cover_article_id` FOREIGN KEY (`article_id`) REFERENCES `article` (`id`),
   CONSTRAINT `article_cover_image_id` FOREIGN KEY (`image_id`) REFERENCES `image` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for article_tag
@@ -79,7 +79,7 @@ CREATE TABLE `article_tag` (
   KEY `article_tag_tag_id` (`tag_id`),
   CONSTRAINT `article_tag_article_id` FOREIGN KEY (`article_id`) REFERENCES `article` (`id`),
   CONSTRAINT `article_tag_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for category
@@ -91,7 +91,7 @@ CREATE TABLE `category` (
   `create_date` datetime NOT NULL,
   `update_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for home_info
@@ -121,12 +121,13 @@ CREATE TABLE `image` (
   `length` int(11) DEFAULT NULL,
   `width` double DEFAULT NULL,
   `height` double DEFAULT NULL,
+  `bucket` int(10) DEFAULT NULL,
   `server` int(11) DEFAULT NULL,
-  `bucket` varchar(40) DEFAULT NULL,
+  `type` int(10) DEFAULT NULL,
   `create_date` datetime DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for tag
@@ -140,6 +141,6 @@ CREATE TABLE `tag` (
   `create_date` datetime DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 SET FOREIGN_KEY_CHECKS = 1;
