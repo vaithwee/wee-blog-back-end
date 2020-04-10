@@ -22,6 +22,10 @@
     delete from home_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteByImageId" parameterType="java.lang.Integer">
+    delete from home_info
+    where cover_id = #{id,jdbcType=INTEGER}
+  </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="xyz.vaith.weeblogbackend.model.HomeInfo" useGeneratedKeys="true">
     insert into home_info (cover_id, greeting, create_date, 
       update_date)

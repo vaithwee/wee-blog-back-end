@@ -21,6 +21,10 @@
     delete from article_cover
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteByImageId" parameterType="java.lang.Integer">
+    delete from article_cover
+    where image_id = #{id,jdbcType=INTEGER}
+  </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="xyz.vaith.weeblogbackend.model.ArticleCover" useGeneratedKeys="true">
     insert into article_cover (article_id, image_id, create_date, 
       update_date)

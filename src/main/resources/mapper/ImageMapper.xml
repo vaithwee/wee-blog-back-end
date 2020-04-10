@@ -27,7 +27,7 @@
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from image
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER};
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="xyz.vaith.weeblogbackend.model.Image" useGeneratedKeys="true">
     insert into image (`name`, original_name, `key`, 
@@ -172,7 +172,7 @@
   </select>
 
   <select id="selectByArticleId" resultMap="BaseResultMap">
-    SELECT i.id, i.name, i.original_name, i.key, i.content_type, i.length, i.width, i.heigth
+    SELECT i.id, i.name, i.original_name, i.key, i.content_type, i.length, i.width, i.height
     FROM image i, article_cover ac
     WHERE ac.image_id = i.id
       AND ac.article_id = #{id}

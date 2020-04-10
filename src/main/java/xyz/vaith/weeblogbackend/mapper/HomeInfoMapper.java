@@ -5,6 +5,9 @@ import xyz.vaith.weeblogbackend.model.HomeInfo;
 public interface HomeInfoMapper {
     int deleteByPrimaryKey(Integer id);
 
+
+    int deleteByImageId(Integer id);
+
     int insert(HomeInfo record);
 
     int insertSelective(HomeInfo record);

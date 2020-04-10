@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
+import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
@@ -25,6 +26,7 @@ import java.util.UUID;
 public class QiniuUtil {
     private Auth auth;
     private UploadManager uploadManager;
+    private BucketManager bucketManager;
 
 
     private static String bucket = "images";
@@ -45,6 +47,7 @@ public class QiniuUtil {
         auth = Auth.create(token.getAccessKey(), token.getSecretKey());
         Configuration configuration = new Configuration(Zone.zone0());
         uploadManager = new UploadManager(configuration);
+        bucketManager = new BucketManager(auth, configuration);
     }
 
     public String uploadFile(File file) throws QiniuException {
@@ -54,6 +57,10 @@ public class QiniuUtil {
         Response response = uploadManager.put(file, uuid, token);
         DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
         return putRet.key;
+    }
+
+    public void delete(String key) throws Exception {
+        bucketManager.delete(bucket, key);
     }
 
     public String getOriginalURL(String key) {
