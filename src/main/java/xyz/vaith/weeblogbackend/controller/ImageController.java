@@ -22,9 +22,9 @@ public class ImageController {
     ImageService imageService;
 
     @RequestMapping("/upload")
-    public Result uploadFile(HttpServletRequest request, @RequestParam MultipartFile file, @RequestParam String filename) throws Exception {
+    public Result uploadFile(HttpServletRequest request, @RequestParam MultipartFile file, @RequestParam String filename, @RequestParam Integer type) throws Exception {
         String path = request.getSession().getServletContext().getRealPath("/images/");
-       return Result.success(imageService.saveImageFileToBucket(file, filename, path));
+       return Result.success(imageService.saveImageFileToBucket(file, filename, path, type));
     }
 
     @RequestMapping("/list")

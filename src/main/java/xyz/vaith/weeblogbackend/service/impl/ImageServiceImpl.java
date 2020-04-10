@@ -49,7 +49,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     @CacheEvict(value = RedisCacheKeys.IMAGE_LIST, allEntries = true)
-    public Image saveImageFileToBucket(MultipartFile file, String filename, String tmp) throws Exception {
+    public Image saveImageFileToBucket(MultipartFile file, String filename, String tmp, Integer type) throws Exception {
 
         log.info(token.getSecretKey());
 
@@ -76,7 +76,7 @@ public class ImageServiceImpl implements ImageService {
         File target = new File(tmp, nfn);
         file.transferTo(target);
 
-        String key = QiniuUtil.defaultUtil().uploadFile(target);
+        String key = QiniuUtil.defaultUtil().uploadFile(target, type);
         BufferedImage bi = ImageIO.read(new FileInputStream(target));
         Image image = Image.builder().createDate(new Date()).updateDate(new Date()).name(nfn).contentType(contentType).length(length).server(1).bucket("image").key(key).width((double) bi.getWidth()).height((double) bi.getHeight()).originalName(filename).build();
         imageMapper.insert(image);
@@ -87,7 +87,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    @Cacheable(value = RedisCacheKeys.IMAGE_LIST, key = "#page")
+    @Cacheable(value = RedisCacheKeys.IMAGE_LIST, key = "#page-#size")
     public Page<Image> getImageList(int page, int size) throws Exception {
         log.info("图片缓存生成");
         List<Image> images = imageMapper.selectImageList(page * size, size);

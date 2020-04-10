@@ -1,6 +1,5 @@
 package xyz.vaith.weeblogbackend.util;
 
-import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
@@ -11,15 +10,8 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @Log4j2
@@ -29,7 +21,8 @@ public class QiniuUtil {
     private BucketManager bucketManager;
 
 
-    private static String bucket = "images";
+    private static String private_bucket = "images";
+    private static String markdown_bucket = "wee-markdown";
     public static String mini = "imageView2/1/w/50/h/50/q/75|imageslim";
     public static String preview = "imageView2/0/w/200/h/200/q/75|imageslim";
 
@@ -50,7 +43,11 @@ public class QiniuUtil {
         bucketManager = new BucketManager(auth, configuration);
     }
 
-    public String uploadFile(File file) throws QiniuException {
+    public String uploadFile(File file, Integer type) throws QiniuException {
+        String bucket = private_bucket;
+        if (type == 1) {
+            bucket = markdown_bucket;
+        }
         String token = auth.uploadToken(bucket);
         String uuid = UUID.randomUUID().toString().replace(" ", "").toLowerCase();
 
@@ -60,7 +57,7 @@ public class QiniuUtil {
     }
 
     public void delete(String key) throws Exception {
-        bucketManager.delete(bucket, key);
+        bucketManager.delete(private_bucket, key);
     }
 
     public String getOriginalURL(String key) {
