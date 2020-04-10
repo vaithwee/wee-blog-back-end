@@ -1,4 +1,6 @@
-package xyz.vaith.weeblogbackend.enumerate;
+package xyz.vaith.weeblogbackend.enumerate.util;
+
+import xyz.vaith.weeblogbackend.enumerate.BaseEnum;
 
 public class EnumUtils {
     public static <T extends Enum<?> & BaseEnum> T codeOf(Class<T> enumClass, int code) {

@@ -5,8 +5,8 @@ import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.MappedTypes;
 import xyz.vaith.weeblogbackend.enumerate.BaseEnum;
-import xyz.vaith.weeblogbackend.enumerate.EnumUtils;
-import xyz.vaith.weeblogbackend.enumerate.ImageAccessType;
+import xyz.vaith.weeblogbackend.enumerate.util.EnumUtils;
+import xyz.vaith.weeblogbackend.enumerate.image.ImageAccessType;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;

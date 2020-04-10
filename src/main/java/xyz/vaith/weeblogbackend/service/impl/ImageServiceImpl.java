@@ -1,16 +1,15 @@
 package xyz.vaith.weeblogbackend.service.impl;
 
 import lombok.extern.log4j.Log4j2;
-import org.apache.ibatis.cache.CacheKey;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import xyz.vaith.weeblogbackend.enumerate.EnumUtils;
-import xyz.vaith.weeblogbackend.enumerate.ImageAccessType;
+import xyz.vaith.weeblogbackend.enumerate.image.ImageBucketType;
+import xyz.vaith.weeblogbackend.enumerate.image.ImageServerType;
+import xyz.vaith.weeblogbackend.enumerate.util.EnumUtils;
+import xyz.vaith.weeblogbackend.enumerate.image.ImageAccessType;
 import xyz.vaith.weeblogbackend.exception.BuzzException;
 import xyz.vaith.weeblogbackend.mapper.ArticleCoverMapper;
 import xyz.vaith.weeblogbackend.mapper.HomeInfoMapper;
@@ -78,24 +77,34 @@ public class ImageServiceImpl implements ImageService {
         File target = new File(tmp, nfn);
         file.transferTo(target);
 
-        String key = QiniuUtil.defaultUtil().uploadFile(target, type);
+        ImageAccessType accessType = EnumUtils.codeOf(ImageAccessType.class, type);
+        ImageBucketType bucketType;
+        switch (accessType) {
+            case PUBLIC:
+                bucketType = ImageBucketType.MARKDOWN;
+                break;
+            default:
+                bucketType = ImageBucketType.IMAGES;
+                break;
+        }
+
+
+        String key = QiniuUtil.defaultUtil().uploadFile(target, accessType);
         BufferedImage bi = ImageIO.read(new FileInputStream(target));
+
         Image image = Image.builder().createDate(new Date())
                 .updateDate(new Date())
                 .name(nfn)
                 .contentType(contentType)
                 .length(length)
-                .server(1)
-                .bucket("image")
+                .server(ImageServerType.QINIU)
+                .bucket(bucketType)
                 .key(key)
                 .width((double) bi.getWidth())
                 .height((double) bi.getHeight())
                 .type(EnumUtils.codeOf(ImageAccessType.class, type))
                 .originalName(filename).build();
         imageMapper.insert(image);
-        image.setPreviewURL(QiniuUtil.defaultUtil().getLimitURL(key, QiniuUtil.preview));
-        image.setOriginalURL(QiniuUtil.defaultUtil().getOriginalURL(key));
-
         return image;
     }
 

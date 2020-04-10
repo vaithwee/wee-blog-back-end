@@ -7,7 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import xyz.vaith.weeblogbackend.enumerate.ImageAccessType;
+import xyz.vaith.weeblogbackend.enumerate.image.ImageAccessType;
+import xyz.vaith.weeblogbackend.enumerate.image.ImageBucketType;
+import xyz.vaith.weeblogbackend.enumerate.image.ImageServerType;
 import xyz.vaith.weeblogbackend.util.QiniuUtil;
 
 /**
@@ -35,9 +37,9 @@ public class Image implements Serializable {
 
     private Double height;
 
-    private Integer server;
+    private ImageServerType server;
 
-    private String bucket;
+    private ImageBucketType bucket;
 
     private String previewURL;
 
@@ -49,14 +51,18 @@ public class Image implements Serializable {
 
     private Date updateDate;
 
-    public String getKey() {
-        return key;
+    public String getPreviewURL() {
+        if (previewURL == null) {
+            previewURL = QiniuUtil.defaultUtil().getLimitURL(key, QiniuUtil.preview, type);
+        }
+        return previewURL;
     }
 
-    public void setKey(String key) {
-        this.key = key;
-        this.previewURL = QiniuUtil.defaultUtil().getLimitURL(key, QiniuUtil.preview);
-        this.originalURL = QiniuUtil.defaultUtil().getOriginalURL(key);
+    public String getOriginalURL() {
+        if (originalURL == null) {
+            originalURL = QiniuUtil.defaultUtil().getOriginalURL(key, type);
+        }
+        return originalURL;
     }
 
     private static final long serialVersionUID = 1L;
