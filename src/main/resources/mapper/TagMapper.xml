@@ -114,4 +114,8 @@
         WHERE t.id = att.tag_id
         AND att.article_id = #{id}
   </select>
+
+  <select id="selectCount" resultType="int">
+    select count(*) from tag;
+  </select>
 </mapper>

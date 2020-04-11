@@ -109,7 +109,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    @Cacheable(value = RedisCacheKeys.IMAGE_LIST, key = "#page-#size")
+    @Cacheable(value = RedisCacheKeys.IMAGE_LIST, key = "#page+ '-' + #size")
     public Page<Image> getImageList(int page, int size) throws Exception {
         log.info("图片缓存生成");
         List<Image> images = imageMapper.selectImageList(page * size, size);

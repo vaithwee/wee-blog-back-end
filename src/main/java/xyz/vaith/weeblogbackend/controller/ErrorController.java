@@ -2,6 +2,7 @@ package xyz.vaith.weeblogbackend.controller;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import xyz.vaith.weeblogbackend.exception.BuzzException;
@@ -45,6 +46,8 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
             return Result.fail(e.getMessage());
         } else if (e.getCause() instanceof SignException) {
             return Result.fail(e.getMessage());
+        } else if (e instanceof HttpMessageNotReadableException) {
+            return Result.fail("参数类型错误");
         } else {
             return Result.defaultFail();
         }

@@ -22,4 +22,6 @@ public interface TagMapper {
     List<Tag> selectTagsByIDs(List<Integer> ids);
 
     List<Tag> selectTagsByArticleID(Integer id);
+
+    int selectCount();
 }

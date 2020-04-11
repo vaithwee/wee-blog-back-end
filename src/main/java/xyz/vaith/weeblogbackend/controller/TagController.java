@@ -35,4 +35,9 @@ public class TagController {
     public Result list(int page, int size) throws Exception {
         return Result.success(tagService.getTagList(page,  size));
     }
+
+    @RequestMapping("/update")
+    public Result update(@RequestBody TagParam param) throws Exception {
+        return Result.success(tagService.updateTTag(param));
+    }
 }
