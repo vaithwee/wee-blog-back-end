@@ -93,4 +93,7 @@
   <select id="selectExistCategory" resultType="int" parameterType="string">
     select  count(*) from  category where name = #{name}
   </select>
+  <select id="selectCount" resultType="int">
+    select  count(*) from  category;
+  </select>
 </mapper>

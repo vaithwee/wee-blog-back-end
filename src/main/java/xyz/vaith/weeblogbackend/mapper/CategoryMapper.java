@@ -25,4 +25,6 @@ public interface CategoryMapper {
     List<Category> selectByPageAndSize(int page, int size);
 
     int selectExistCategory(String name);
+
+    int selectCount();
 }

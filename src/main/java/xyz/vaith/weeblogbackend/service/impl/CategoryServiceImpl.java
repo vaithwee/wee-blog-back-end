@@ -5,6 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import xyz.vaith.weeblogbackend.exception.BuzzException;
 import xyz.vaith.weeblogbackend.mapper.CategoryMapper;
 import xyz.vaith.weeblogbackend.model.Category;
+import xyz.vaith.weeblogbackend.model.Image;
+import xyz.vaith.weeblogbackend.model.Page;
 import xyz.vaith.weeblogbackend.service.CatergoryService;
 
 import javax.annotation.Resource;
@@ -28,8 +30,11 @@ public class CategoryServiceImpl implements CatergoryService {
     }
 
     @Override
-    public List<Category> getListByPageAndSize(int page, int size) throws Exception {
-       return mapper.selectByPageAndSize(page * size, size);
+    public Page<Category> getListByPageAndSize(int page, int size) throws Exception {
+        List<Category> categories = mapper.selectByPageAndSize(page * size, size);
+        int total = mapper.selectCount();
+        int totalPage = total % size == 0 ? total / size : total / size + 1;
+        return Page.<Category>builder().data(categories).size(size).currentPage(page).total(total).totalPage(totalPage).build();
     }
 
     @Override
