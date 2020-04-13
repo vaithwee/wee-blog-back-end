@@ -7,6 +7,7 @@ import xyz.vaith.weeblogbackend.mapper.CategoryMapper;
 import xyz.vaith.weeblogbackend.model.Category;
 import xyz.vaith.weeblogbackend.model.Image;
 import xyz.vaith.weeblogbackend.model.Page;
+import xyz.vaith.weeblogbackend.param.CategoryParam;
 import xyz.vaith.weeblogbackend.service.CatergoryService;
 
 import javax.annotation.Resource;
@@ -40,5 +41,17 @@ public class CategoryServiceImpl implements CatergoryService {
     @Override
     public boolean removeCategoryByID(int id) throws Exception {
         return mapper.deleteByPrimaryKey(id) > 0;
+    }
+
+    @Override
+    public Category updateCategory(CategoryParam categoryParam) throws Exception {
+        Category category = mapper.selectByPrimaryKey(categoryParam.getId());
+        if (category != null) {
+            category.setName(categoryParam.getName());
+            category.setUpdateDate(new Date());
+            mapper.updateByPrimaryKey(category);
+            return category;
+        }
+        throw new BuzzException("分类不存在");
     }
 }
