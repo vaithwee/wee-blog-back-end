@@ -1,12 +1,15 @@
 package xyz.vaith.weeblogbackend.service.impl;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.vaith.weeblogbackend.exception.BuzzException;
 import xyz.vaith.weeblogbackend.mapper.*;
 import xyz.vaith.weeblogbackend.model.*;
 import xyz.vaith.weeblogbackend.param.ArticleParam;
+import xyz.vaith.weeblogbackend.redis.RedisCacheKeys;
 import xyz.vaith.weeblogbackend.service.ArticleService;
 
 import javax.annotation.Resource;
@@ -40,6 +43,7 @@ public class ArticleServiceImpl implements ArticleService {
     ImageMapper imageMapper;
 
     @Override
+    @CacheEvict(value = RedisCacheKeys.ARTICLE_LIST, allEntries = true)
     public Article addArticle(ArticleParam param) throws Exception {
         Category category = categoryMapper.selectByPrimaryKey(param.getCategoryID());
         if (category == null) {
@@ -72,11 +76,13 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Cacheable(value = RedisCacheKeys.ARTICLE_DETAIL, key = "#id")
     public Article getArticleByID(Integer id) throws Exception {
         return  articleMapper.selectByPrimaryKey(id);
     }
 
     @Override
+    @Cacheable(value = RedisCacheKeys.ARTICLE_LIST, key = "#page + '-' + #size")
     public Page<Article> getArticleList(Integer page, Integer size) throws Exception {
         List<Article> articles = articleMapper.selectArticleListBy(page * size, size);
         int total = articleMapper.selectCount();

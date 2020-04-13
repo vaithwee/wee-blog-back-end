@@ -1,5 +1,7 @@
 package xyz.vaith.weeblogbackend.service.impl;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.vaith.weeblogbackend.exception.BuzzException;
@@ -7,6 +9,7 @@ import xyz.vaith.weeblogbackend.mapper.CategoryMapper;
 import xyz.vaith.weeblogbackend.model.Category;
 import xyz.vaith.weeblogbackend.model.Page;
 import xyz.vaith.weeblogbackend.param.CategoryParam;
+import xyz.vaith.weeblogbackend.redis.RedisCacheKeys;
 import xyz.vaith.weeblogbackend.service.CategoryService;
 
 import javax.annotation.Resource;
@@ -19,6 +22,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Resource
     CategoryMapper mapper;
     @Override
+    @CacheEvict(value = RedisCacheKeys.CATEGORY_LIST, allEntries = true)
     public Category addCategory(String name) throws Exception {
         int result = mapper.selectExistCategory(name);
         if (result > 0) {
@@ -30,6 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Cacheable(value = RedisCacheKeys.CATEGORY_LIST, key = "#page + '-' + #size")
     public Page<Category> getListByPageAndSize(int page, int size) throws Exception {
         List<Category> categories = mapper.selectByPageAndSize(page * size, size);
         int total = mapper.selectCount();
@@ -38,11 +43,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @CacheEvict(value = RedisCacheKeys.CATEGORY_LIST, allEntries = true)
     public boolean removeCategoryByID(int id) throws Exception {
         return mapper.deleteByPrimaryKey(id) > 0;
     }
 
     @Override
+    @CacheEvict(value = RedisCacheKeys.CATEGORY_LIST, allEntries = true)
     public Category updateCategory(CategoryParam categoryParam) throws Exception {
         Category category = mapper.selectByPrimaryKey(categoryParam.getId());
         if (category != null) {
