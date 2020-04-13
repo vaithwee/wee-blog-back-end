@@ -5,10 +5,9 @@ import org.springframework.transaction.annotation.Transactional;
 import xyz.vaith.weeblogbackend.exception.BuzzException;
 import xyz.vaith.weeblogbackend.mapper.CategoryMapper;
 import xyz.vaith.weeblogbackend.model.Category;
-import xyz.vaith.weeblogbackend.model.Image;
 import xyz.vaith.weeblogbackend.model.Page;
 import xyz.vaith.weeblogbackend.param.CategoryParam;
-import xyz.vaith.weeblogbackend.service.CatergoryService;
+import xyz.vaith.weeblogbackend.service.CategoryService;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -16,7 +15,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class CategoryServiceImpl implements CatergoryService {
+public class CategoryServiceImpl implements CategoryService {
     @Resource
     CategoryMapper mapper;
     @Override

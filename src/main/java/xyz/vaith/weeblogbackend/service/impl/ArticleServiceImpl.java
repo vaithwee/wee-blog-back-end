@@ -8,7 +8,6 @@ import xyz.vaith.weeblogbackend.mapper.*;
 import xyz.vaith.weeblogbackend.model.*;
 import xyz.vaith.weeblogbackend.param.ArticleParam;
 import xyz.vaith.weeblogbackend.service.ArticleService;
-import xyz.vaith.weeblogbackend.util.QiniuUtil;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -20,7 +19,7 @@ import java.util.List;
 public class ArticleServiceImpl implements ArticleService {
 
     @Resource
-    ArticleMapper mapper;
+    ArticleMapper articleMapper;
 
     @Resource
     CategoryMapper categoryMapper;
@@ -47,7 +46,7 @@ public class ArticleServiceImpl implements ArticleService {
             throw new BuzzException("分类不存在");
         }
         Article article = Article.builder().title(param.getTitle()).content(param.getContent()).createDate(new Date()).updateDate(new Date()).build();
-        int result = mapper.insert(article);
+        int result = articleMapper.insert(article);
         if (result > 0) {
             ArticleCategory ac = ArticleCategory.builder().articleId(article.getId()).categoryId(category.getId()).createDate(new Date()).updateDate(new Date()).build();
             acMapper.insert(ac);
@@ -69,19 +68,19 @@ public class ArticleServiceImpl implements ArticleService {
         log.info("tag select result:" + tags);
         article.setTags(tags);
 
-
-
         return article;
     }
 
     @Override
     public Article getArticleByID(Integer id) throws Exception {
-        return  mapper.selectByPrimaryKey(id);
+        return  articleMapper.selectByPrimaryKey(id);
     }
 
     @Override
-    public List<Article> getArticleList(Integer page, Integer size) throws Exception {
-        List<Article> articles = mapper.selectArticleListBy(page * size, size);
-        return articles;
+    public Page<Article> getArticleList(Integer page, Integer size) throws Exception {
+        List<Article> articles = articleMapper.selectArticleListBy(page * size, size);
+        int total = articleMapper.selectCount();
+        int totalPage = total % size == 0 ? total / size : total / size + 1;
+        return Page.<Article>builder().data(articles).size(size).total(total).currentPage(page).totalPage(totalPage).build();
     }
 }

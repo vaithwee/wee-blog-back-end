@@ -6,7 +6,7 @@ import xyz.vaith.weeblogbackend.param.CategoryParam;
 
 import java.util.List;
 
-public interface CatergoryService {
+public interface CategoryService {
     Category addCategory(String name) throws Exception;
     Page<Category> getListByPageAndSize(int page, int size) throws Exception;
     boolean removeCategoryByID(int id) throws Exception;

@@ -21,5 +21,7 @@ public interface ArticleMapper {
 
     List<Article> selectLastArticleList();
 
+    int selectCount();
+
 
 }

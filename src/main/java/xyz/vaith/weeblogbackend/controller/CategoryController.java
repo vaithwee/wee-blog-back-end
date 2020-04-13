@@ -6,7 +6,7 @@ import xyz.vaith.weeblogbackend.model.Category;
 import xyz.vaith.weeblogbackend.param.CategoryParam;
 import xyz.vaith.weeblogbackend.result.Result;
 import xyz.vaith.weeblogbackend.security.Security;
-import xyz.vaith.weeblogbackend.service.CatergoryService;
+import xyz.vaith.weeblogbackend.service.CategoryService;
 
 import javax.annotation.Resource;
 
@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 public class CategoryController {
 
     @Resource
-    CatergoryService service;
+    CategoryService service;
     @PostMapping("/add")
     public Result add(@RequestBody CategoryParam category) throws Exception {
         Category c = service.addCategory(category.getName());

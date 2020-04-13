@@ -93,6 +93,7 @@
     select
     <include refid="Base_Column_List" />
     from article
+    order by id desc
     limit #{param1}, #{param2}
   </select>
 
@@ -102,5 +103,10 @@
         from article
         order by create_date desc
         limit 6
+    </select>
+    <select id="selectCount" resultType="int">
+        select
+         count(*)
+        from article
     </select>
 </mapper>

@@ -18,6 +18,7 @@ public class ArticleController {
     @Resource
     ArticleService service;
 
+
     @PostMapping("/add")
     public Result add(@RequestBody ArticleParam param) throws Exception {
         return  Result.success(service.addArticle(param));
