@@ -21,6 +21,10 @@
     delete from article_category
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteByArtcileId" parameterType="java.lang.Integer">
+    delete from article_category
+    where article_id = #{id,jdbcType=INTEGER}
+  </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="xyz.vaith.weeblogbackend.model.ArticleCategory" useGeneratedKeys="true">
     insert into article_category (article_id, category_Id, create_date, 
       update_date)

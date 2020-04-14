@@ -89,4 +89,60 @@ public class ArticleServiceImpl implements ArticleService {
         int totalPage = total % size == 0 ? total / size : total / size + 1;
         return Page.<Article>builder().data(articles).size(size).total(total).currentPage(page).totalPage(totalPage).build();
     }
+
+    @Override
+    @CacheEvict(value = {RedisCacheKeys.ARTICLE_LIST, RedisCacheKeys.ARTICLE_DETAIL}, allEntries = true)
+    public Article updateArticle(ArticleParam param) throws Exception {
+        Article article = articleMapper.selectByPrimaryKey(param.getId());
+        if (article != null) {
+            //category
+            Category category = categoryMapper.selectByPrimaryKey(param.getCategoryID());
+            if (category == null) {
+                throw new BuzzException("分类不存在");
+            }
+            acMapper.deleteByArtcileId(article.getId());
+            ArticleCategory ac = ArticleCategory.builder().articleId(article.getId()).categoryId(category.getId()).createDate(new Date()).updateDate(new Date()).build();
+            acMapper.insert(ac);
+            article.setCategory(category);
+
+            //cover
+            Image cover = imageMapper.selectByPrimaryKey(param.getCoverID());
+            if (cover == null) {
+                throw new BuzzException("图片不存在");
+            }
+            articleCoverMapper.deleteByArticleId(article.getId());
+            ArticleCover acc = ArticleCover.builder().articleId(article.getId()).imageId(param.getCoverID()).createDate(new Date()).updateDate(new Date()).build();
+            articleCoverMapper.insert(acc);
+            article.setCover(cover);
+
+
+            //tags
+            atMapper.deleteByArticle(article.getId());
+            List<Tag> tags = tagMapper.selectTagsByIDs(param.getTags());
+            for (Tag tag : tags) {
+                ArticleTag at = ArticleTag.builder().articleId(article.getId()).tagId(tag.getId()).createDate(new Date()).updateDate(new Date()).build();
+                atMapper.insert(at);
+            }
+            article.setTags(tags);
+
+            //content
+            article.setContent(param.getContent());
+            article.setTitle(param.getTitle());
+            article.setUpdateDate(new Date());
+
+            articleMapper.updateByPrimaryKey(article);
+
+            return article;
+        }
+        throw new BuzzException("文章不存在");
+    }
+
+    @Override
+    @CacheEvict(value = RedisCacheKeys.ARTICLE_LIST, allEntries = true)
+    public int removeArticle(int id) throws Exception {
+        acMapper.deleteByArtcileId(id);
+        atMapper.deleteByArticle(id);
+        articleCoverMapper.deleteByArticleId(id);
+        return articleMapper.deleteByPrimaryKey(id);
+    }
 }

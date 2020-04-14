@@ -21,6 +21,10 @@
     delete from article_tag
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteByArticle" parameterType="java.lang.Integer">
+    delete from article_tag
+    where article_id = #{id,jdbcType=INTEGER}
+  </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="xyz.vaith.weeblogbackend.model.ArticleTag" useGeneratedKeys="true">
     insert into article_tag (article_id, tag_id, create_date, 
       update_date)

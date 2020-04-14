@@ -34,4 +34,14 @@ public class ArticleController {
     public Result list(Integer page, Integer size)throws  Exception {
         return  Result.success(service.getArticleList(page, size));
     }
+
+    @PostMapping("/update")
+    public Result update(@RequestBody ArticleParam param) throws Exception {
+        return Result.success(service.updateArticle(param));
+    }
+
+    @PostMapping("/remove")
+    public Result remove(@RequestBody ArticleParam param) throws Exception {
+        return Result.success(service.removeArticle(param.getId()));
+    }
 }

@@ -21,6 +21,10 @@
     delete from article_cover
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteByArticleId" parameterType="java.lang.Integer">
+    delete from article_cover
+    where article_id = #{id,jdbcType=INTEGER}
+  </delete>
   <delete id="deleteByImageId" parameterType="java.lang.Integer">
     delete from article_cover
     where image_id = #{id,jdbcType=INTEGER}

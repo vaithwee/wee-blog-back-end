@@ -10,4 +10,6 @@ public interface ArticleService {
     Article addArticle(ArticleParam param) throws Exception;
     Article getArticleByID(Integer id) throws Exception;
     Page<Article> getArticleList(Integer page, Integer size) throws Exception;
+    Article updateArticle(ArticleParam param) throws Exception;
+    int removeArticle(int id) throws Exception;
 }

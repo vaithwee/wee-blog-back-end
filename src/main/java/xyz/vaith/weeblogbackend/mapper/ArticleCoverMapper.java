@@ -5,6 +5,8 @@ import xyz.vaith.weeblogbackend.model.ArticleCover;
 public interface ArticleCoverMapper {
     int deleteByPrimaryKey(Integer id);
 
+    int deleteByArticleId(Integer id);
+
     int deleteByImageId(Integer id);
 
     int insert(ArticleCover record);
