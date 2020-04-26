@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import xyz.vaith.weeblogbackend.authority.Authority;
 import xyz.vaith.weeblogbackend.result.Result;
 import xyz.vaith.weeblogbackend.param.ImageParam;
+import xyz.vaith.weeblogbackend.security.Security;
 import xyz.vaith.weeblogbackend.service.ImageService;
 
 import javax.annotation.Resource;
@@ -28,11 +29,13 @@ public class ImageController {
     }
 
     @RequestMapping("/list")
+    @Security
     public Result list(Integer page, Integer size) throws Exception {
         return Result.success(imageService.getImageList(page, size));
     }
 
     @RequestMapping("/remove")
+    @Security
     public Result remove(@RequestBody ImageParam param) throws Exception {
         imageService.deleteImage(param.getId());
         return Result.success(null);
