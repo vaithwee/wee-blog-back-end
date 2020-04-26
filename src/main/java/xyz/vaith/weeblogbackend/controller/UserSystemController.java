@@ -15,10 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 public class UserSystemController {
     @PostMapping("/login")
     public Result login(@RequestBody UserParam param) {
-        if (param.getUsername().equals("wee") && param.getPassword().equals("3.24c.2224c")) {
-            return Result.fail("账号或者密码错误");
-        } else  {
+        if (param.getUsername().equals("wee") && param.getPassword().equals("3.24c.224c")) {
             return  Result.success(AuthorityJWTUtil.createToken(param.getUsername(), 0));
+        } else  {
+            return Result.fail("账号或者密码错误");
+
         }
 
     }
