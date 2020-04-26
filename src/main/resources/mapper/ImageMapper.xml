@@ -8,8 +8,8 @@
     <result column="key" jdbcType="VARCHAR" property="key" />
     <result column="content_type" jdbcType="VARCHAR" property="contentType" />
     <result column="length" jdbcType="INTEGER" property="length" />
-    <result column="width" jdbcType="DOUBLE" property="width" />
-    <result column="height" jdbcType="DOUBLE" property="height" />
+    <result column="width" jdbcType="INTEGER" property="width" />
+    <result column="height" jdbcType="INTEGER" property="height" />
     <result column="server" jdbcType="INTEGER" property="server" />
     <result column="bucket" jdbcType="INTEGER" property="bucket" />
     <result column="type" jdbcType="INTEGER" property="type" />
@@ -37,8 +37,8 @@
       `type`, create_date, update_date
       )
     values (#{name,jdbcType=VARCHAR}, #{originalName,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, 
-      #{contentType,jdbcType=VARCHAR}, #{length,jdbcType=INTEGER}, #{width,jdbcType=DOUBLE}, 
-      #{height,jdbcType=DOUBLE}, #{server,jdbcType=INTEGER}, #{bucket,jdbcType=INTEGER},
+      #{contentType,jdbcType=VARCHAR}, #{length,jdbcType=INTEGER}, #{width,jdbcType=INTEGER},
+      #{height,jdbcType=INTEGER}, #{server,jdbcType=INTEGER}, #{bucket,jdbcType=INTEGER},
       #{type,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -99,10 +99,10 @@
         #{length,jdbcType=INTEGER},
       </if>
       <if test="width != null">
-        #{width,jdbcType=DOUBLE},
+        #{width,jdbcType=INTEGER},
       </if>
       <if test="height != null">
-        #{height,jdbcType=DOUBLE},
+        #{height,jdbcType=INTEGER},
       </if>
       <if test="server != null">
         #{server,jdbcType=INTEGER},
@@ -140,10 +140,10 @@
         `length` = #{length,jdbcType=INTEGER},
       </if>
       <if test="width != null">
-        width = #{width,jdbcType=DOUBLE},
+        width = #{width,jdbcType=INTEGER},
       </if>
       <if test="height != null">
-        height = #{height,jdbcType=DOUBLE},
+        height = #{height,jdbcType=INTEGER},
       </if>
       <if test="server != null">
         server = #{server,jdbcType=INTEGER},
@@ -170,8 +170,8 @@
       `key` = #{key,jdbcType=VARCHAR},
       content_type = #{contentType,jdbcType=VARCHAR},
       `length` = #{length,jdbcType=INTEGER},
-      width = #{width,jdbcType=DOUBLE},
-      height = #{height,jdbcType=DOUBLE},
+      width = #{width,jdbcType=INTEGER},
+      height = #{height,jdbcType=INTEGER},
       server = #{server,jdbcType=INTEGER},
       bucket = #{bucket,jdbcType=INTEGER},
       `type` = #{type,jdbcType=INTEGER},

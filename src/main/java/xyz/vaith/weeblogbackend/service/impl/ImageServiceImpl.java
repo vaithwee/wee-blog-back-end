@@ -100,8 +100,8 @@ public class ImageServiceImpl implements ImageService {
                 .server(ImageServerType.QINIU)
                 .bucket(bucketType)
                 .key(key)
-                .width((double) bi.getWidth())
-                .height((double) bi.getHeight())
+                .width( bi.getWidth())
+                .height(bi.getHeight())
                 .type(EnumUtils.codeOf(ImageAccessType.class, type))
                 .originalName(filename).build();
         imageMapper.insert(image);

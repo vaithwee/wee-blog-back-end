@@ -33,9 +33,9 @@ public class Image implements Serializable {
 
     private Long length;
 
-    private Double width;
+    private Integer width;
 
-    private Double height;
+    private Integer height;
 
     private ImageServerType server;
 

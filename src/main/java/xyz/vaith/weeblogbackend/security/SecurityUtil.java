@@ -38,4 +38,12 @@ public class SecurityUtil {
     public static String MD5(String content) {
          return DigestUtils.md5DigestAsHex(content.getBytes());
     }
+
+    public static void main(String[] args) {
+        try {
+            System.out.println(SecurityUtil.encrypt("hello world", "WqYJ5Xw7nchEHD0hQicMOmOCqmynDN6n"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
