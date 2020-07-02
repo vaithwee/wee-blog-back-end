@@ -40,4 +40,9 @@ public class BlogController {
         return  Result.success(articleService.getArticleList(page, size));
     }
 
+    @RequestMapping("/category")
+    public Result category() throws Exception {
+        return Result.success(blogService.categoryList());
+    }
+
 }
