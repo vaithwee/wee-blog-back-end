@@ -56,6 +56,11 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<Article> recentArticleList() throws Exception {
-        return articleMapper.selectLastArticleList();
+        List<Article> data =  articleMapper.selectLastArticleList();
+        if (data.size() <= 3) {
+            return data;
+        } else  {
+            return data.subList(0, 3);
+        }
     }
 }
