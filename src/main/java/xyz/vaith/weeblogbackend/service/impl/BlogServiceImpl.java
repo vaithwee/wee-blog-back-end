@@ -53,4 +53,9 @@ public class BlogServiceImpl implements BlogService {
     public List<Category> categoryList() throws Exception {
         return categoryMapper.selectByPageAndSize(0, 100);
     }
+
+    @Override
+    public List<Article> recentArticleList() throws Exception {
+        return articleMapper.selectLastArticleList();
+    }
 }

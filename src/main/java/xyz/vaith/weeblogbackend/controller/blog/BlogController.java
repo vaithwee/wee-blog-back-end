@@ -45,4 +45,9 @@ public class BlogController {
         return Result.success(blogService.categoryList());
     }
 
+    @RequestMapping("/recent")
+    public Result recent() throws Exception {
+        return Result.success(blogService.recentArticleList());
+    }
+
 }

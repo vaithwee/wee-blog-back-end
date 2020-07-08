@@ -10,4 +10,5 @@ public interface BlogService {
     Map<String, Object> homeInfo() throws Exception;
     Article getArticleByID(int id) throws Exception;
     List<Category> categoryList() throws Exception;
+    List<Article> recentArticleList() throws Exception;
 }
