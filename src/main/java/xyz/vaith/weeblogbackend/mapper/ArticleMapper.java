@@ -23,5 +23,7 @@ public interface ArticleMapper {
 
     int selectCount();
 
+    List<String> selectArchiveList();
+
 
 }

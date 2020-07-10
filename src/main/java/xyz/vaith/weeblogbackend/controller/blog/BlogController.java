@@ -50,4 +50,14 @@ public class BlogController {
         return Result.success(blogService.recentArticleList());
     }
 
+    @RequestMapping("/archive")
+    public Result archive() throws Exception {
+        return Result.success(blogService.archiveList());
+    }
+
+    @RequestMapping("/tags")
+    public Result tags() throws Exception {
+        return Result.success(blogService.tagList());
+    }
+
 }

@@ -119,4 +119,7 @@
         select count(*)
         from article
     </select>
+    <select id="selectArchiveList" resultType="string">
+        SELECT DISTINCT DATE_FORMAT(a.create_date,'%Y%m') FROM article as a ORDER BY a.create_date DESC limit 10;
+    </select>
 </mapper>

@@ -7,8 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import xyz.vaith.weeblogbackend.mapper.ArticleMapper;
 import xyz.vaith.weeblogbackend.mapper.CategoryMapper;
 import xyz.vaith.weeblogbackend.mapper.HomeInfoMapper;
+import xyz.vaith.weeblogbackend.mapper.TagMapper;
 import xyz.vaith.weeblogbackend.model.Article;
 import xyz.vaith.weeblogbackend.model.Category;
+import xyz.vaith.weeblogbackend.model.Tag;
 import xyz.vaith.weeblogbackend.redis.CacheExpire;
 import xyz.vaith.weeblogbackend.redis.RedisCacheKeys;
 import xyz.vaith.weeblogbackend.service.BlogService;
@@ -31,6 +33,9 @@ public class BlogServiceImpl implements BlogService {
 
     @Resource
     CategoryMapper categoryMapper;
+
+    @Resource
+    TagMapper tagMapper;
 
 
 
@@ -62,5 +67,15 @@ public class BlogServiceImpl implements BlogService {
         } else  {
             return data.subList(0, 3);
         }
+    }
+
+    @Override
+    public List<String> archiveList() throws Exception {
+        return articleMapper.selectArchiveList();
+    }
+
+    @Override
+    public List<Tag> tagList() throws Exception {
+        return tagMapper.selectSortTagsList();
     }
 }
