@@ -60,4 +60,9 @@ public class BlogController {
         return Result.success(blogService.tagList());
     }
 
+    @RequestMapping("/footnote")
+    public Result footnote() throws Exception {
+        return Result.success(blogService.footnote());
+    }
+
 }

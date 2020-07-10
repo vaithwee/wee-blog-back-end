@@ -120,6 +120,6 @@
   </select>
 
     <select id="selectSortTagsList" resultMap="BaseResultMap">
-        SELECT * FROM tag ORDER BY sort LIMIT 15;
+        SELECT * FROM tag ORDER BY sort DESC LIMIT 15;
     </select>
 </mapper>

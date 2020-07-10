@@ -78,4 +78,16 @@ public class BlogServiceImpl implements BlogService {
     public List<Tag> tagList() throws Exception {
         return tagMapper.selectSortTagsList();
     }
+
+    @Override
+    public Map<String, Object> footnote() throws Exception {
+        Map<String, Object> data = new HashMap<>();
+        List<Article> articles =  articleMapper.selectLastArticleList();
+        List<String> archives = articleMapper.selectArchiveList();
+        List<Tag> tags = tagMapper.selectSortTagsList();
+        data.put("articles", articles.size() > 3 ? articles.subList(0, 3): articles);
+        data.put("archives", archives);
+        data.put("tags", tags);
+        return data;
+    }
 }

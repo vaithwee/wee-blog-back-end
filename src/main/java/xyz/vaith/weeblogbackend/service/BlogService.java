@@ -14,4 +14,5 @@ public interface BlogService {
     List<Article> recentArticleList() throws Exception;
     List<String> archiveList() throws Exception;
     List<Tag> tagList() throws Exception;
+    Map<String, Object> footnote() throws Exception;
 }
