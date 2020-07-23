@@ -25,5 +25,12 @@ public interface ArticleMapper {
 
     List<String> selectArchiveList();
 
+    List<Article> selectArticleListWhereNameLike(String keyword, int start, int end);
+
+    List<Article> selectArticleListWhereArchive(String archive, int start, int end);
+
+    List<Article> selectArticleListWhereCategory(String category, int start, int end);
+
+    List<Article> selectArticleListWhereTag(String category, int start, int end);
 
 }

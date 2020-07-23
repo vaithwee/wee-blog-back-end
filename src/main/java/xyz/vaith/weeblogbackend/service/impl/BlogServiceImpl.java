@@ -1,5 +1,6 @@
 package xyz.vaith.weeblogbackend.service.impl;
 
+import lombok.Builder;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import xyz.vaith.weeblogbackend.mapper.HomeInfoMapper;
 import xyz.vaith.weeblogbackend.mapper.TagMapper;
 import xyz.vaith.weeblogbackend.model.Article;
 import xyz.vaith.weeblogbackend.model.Category;
+import xyz.vaith.weeblogbackend.model.Page;
 import xyz.vaith.weeblogbackend.model.Tag;
 import xyz.vaith.weeblogbackend.redis.CacheExpire;
 import xyz.vaith.weeblogbackend.redis.RedisCacheKeys;
@@ -89,5 +91,21 @@ public class BlogServiceImpl implements BlogService {
         data.put("archives", archives);
         data.put("tags", tags);
         return data;
+    }
+
+    @Override
+    public Page<Article> search(String keyword, int page, int size) throws Exception {
+        List<Article> list;
+        if (keyword.startsWith("archive:")) {
+            list = articleMapper.selectArticleListWhereArchive(keyword.replace("archive:", ""), 0, 20);
+        } else if (keyword.startsWith("cate:")) {
+            list = articleMapper.selectArticleListWhereCategory(keyword.replace("cate:", ""), 0, 20);
+        }else if (keyword.startsWith("tag:")) {
+            list = articleMapper.selectArticleListWhereTag(keyword.replace("tag:", ""), 0, 20);
+        } else {
+            list = articleMapper.selectArticleListWhereNameLike(keyword, 0, 20);
+        }
+        return Page.<Article>builder().currentPage(0).size(20).data(list).build();
+
     }
 }

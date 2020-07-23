@@ -65,4 +65,9 @@ public class BlogController {
         return Result.success(blogService.footnote());
     }
 
+    @RequestMapping("/search")
+    public Result search(String keyword) throws Exception {
+        return Result.success(blogService.search(keyword, 0, 20));
+    }
+
 }

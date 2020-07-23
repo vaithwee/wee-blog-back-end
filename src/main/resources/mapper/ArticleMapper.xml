@@ -122,4 +122,32 @@
     <select id="selectArchiveList" resultType="string">
         SELECT DISTINCT DATE_FORMAT(a.create_date,'%Y%m') FROM article as a ORDER BY a.create_date DESC limit 10;
     </select>
+    <select id="selectArticleListWhereNameLike" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        where title like concat('%',#{param1}, '%')
+        order by id desc
+        limit #{param2}, #{param3}
+    </select>
+    <select id="selectArticleListWhereArchive" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from article as a
+        where DATE_FORMAT(a.create_date,'%Y%m') = #{param1}
+        order by id desc
+        limit #{param2}, #{param3}
+    </select>
+    <select id="selectArticleListWhereCategory" resultMap="BaseResultMap">
+        SELECT * FROM article
+        WHERE id in (SELECT article_id FROM article_category WHERE category_Id in (SELECT id FROM category WHERE name = #{param1}))
+        order by id desc
+        limit #{param2}, #{param3}
+    </select>
+    <select id="selectArticleListWhereTag" resultMap="BaseResultMap">
+        SELECT * FROM article
+        WHERE id in (SELECT article_id FROM article_tag WHERE tag_id in (SELECT id FROM tag WHERE name = #{param1}))
+        order by id desc
+        limit #{param2}, #{param3}
+    </select>
 </mapper>

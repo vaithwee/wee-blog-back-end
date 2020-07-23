@@ -2,6 +2,7 @@ package xyz.vaith.weeblogbackend.service;
 
 import xyz.vaith.weeblogbackend.model.Article;
 import xyz.vaith.weeblogbackend.model.Category;
+import xyz.vaith.weeblogbackend.model.Page;
 import xyz.vaith.weeblogbackend.model.Tag;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface BlogService {
     List<String> archiveList() throws Exception;
     List<Tag> tagList() throws Exception;
     Map<String, Object> footnote() throws Exception;
+    Page<Article> search(String keyword, int page, int size) throws Exception;
 }
